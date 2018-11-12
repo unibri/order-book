@@ -3,10 +3,10 @@
 /*DEFINITIONS FOR ORDERBOOK FUNCTIONS*/
 
 Queue::Queue(){
-	aFront = nullptr;
-	aRear = nullptr;
-	bFront = nullptr;
-	bRear = nullptr;
+	bidFront = nullptr;
+	bidRear = nullptr;
+	askFront = nullptr;
+	askRear = nullptr;
 	aSize = 0;
 	bSize = 0;
 }
@@ -105,22 +105,43 @@ void OrderBook::grabdata() {
 	}
 }
 
+
+
 //action=1, this is a buy order and check the AskBook
 //action=-1, this is a sell order and check the BidBook
 void OrderBook::matchMarket(Order* currentPtr, int action)
 {	
+	queueNode *nowFront, *nowRear;
+	nowFront = new queueNode;
+	nowRear = new queueNode;
+	bool match;
+	// decide which book to check
+	if (action == 1) {
+		nowFront = askFront;
+		nowRear = askRear;
+	}
+	else {
+		nowFront = bidFront;
+		nowRear = bidRear;
+	}
+	// step 1: check if the book is empty
+	if (isEmpty(action)) {} // there is not match, display messeage "Market Inbalance - XXX order ID: XXX Volume: XXX - unmatched"
+
+	// step 2: making match	
+	match = true;
+	while (currentPtr->getNumShares > nowFront->p->getNumShares)
+		{
+
+		
+		if (nowFront->next = nullptr) { 
+			match = false;
+		
+		} //match finish, there're remained shares, display message and break 
+
+	};//match going on
 	
-	// step 1: check it the book is empty
-	if (isEmpty(action)) {} // there is not match, display market inbalance messeage and exist
-
-	// step 2: making match
-	if (action==1){ 
-		if (currentPtr->getNumShares > aFront->p->getNumShares) {} //match going on
-		else if
-			(currentPtr->getNumShares == aFront->p->getNumShares) {} //match finish
-		else
-		{} //match finish and market inbalance
-
+	if (currentPtr->getNumShares == nowFront->p->getNumShares) & (match) {} //match finish, break
+	else {} //match finish and display message:market inbalance
 	
 
 	}

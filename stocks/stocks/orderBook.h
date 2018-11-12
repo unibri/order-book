@@ -28,6 +28,7 @@ public:
 	void deleteOrder(Order*,int); // int indicates book type
 	bool isEmpty(int ) const;
 	void clearQ();
+    
 };
 
 // inheritance ask/bid book
