@@ -2,6 +2,10 @@
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <sstream>
+#include <iomanip>
+#include <cstring>
+#include <stdlib.h>     /* exit, EXIT_FAILURE */
 #include <fstream>
 using namespace std;
 using std::string;

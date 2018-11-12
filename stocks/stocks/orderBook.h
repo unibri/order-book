@@ -18,7 +18,7 @@ protected:
 
 public:
 	Queue();
-	virtual ~Queue();
+	~Queue();
 	void enqueue(Order*);
 	void dequeue(Order&);
 	bool isEmpty() const;
