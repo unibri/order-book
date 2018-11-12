@@ -100,6 +100,7 @@ void OrderBook::grabdata() {
 
 /*
 void matchMBid(Order* o) {
-	
+
+
 }
 */
