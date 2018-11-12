@@ -8,22 +8,17 @@
 
 class Queue {
 protected:
-
-	struct qNodeAsk{
+	struct queueNode{
 		Order* p;
-		qNodeAsk* next;
+		queueNode* next;
 	};
-	qNodeAsk* aFront;
-	qNodeAsk* aRear;
-
-	struct qNodeBid {
-		Order* p;
-		qNodeBid* next;
-	};
-	qNodeBid* bFront;
-	qNodeBid* bRear;
+	queueNode* bidFront;
+	queueNode* bidRear;
+	queueNode* askFront;
+	queueNode* askRear;
+	int aSize, bSize;
 	
-	int aSize,bSize;
+	
 
 public:
 	Queue();
@@ -45,6 +40,8 @@ public:
 	// int stores actions: 1 bid, -1 ask
 	void matchMarket(Order*, int); 
 	void matchLimited(Order*, int); 
+
+	void matchMBid(Order* o);
 
 };
 
