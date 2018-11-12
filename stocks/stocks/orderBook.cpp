@@ -128,29 +128,27 @@ void OrderBook::matchMarket(Order* currentPtr)
 
 	// step 2: making match	
 	match = true;
-	while (currentPtr->getNumShares > Front->p->getNumShares)
+	while (currentPtr->getNumShares() > Front->p->getNumShares())
 		{
 		display(currentPtr,Front->p);  //record the transaction;
-		currentPtr->setNumShares(currentPtr->getNumShares - Front->p->getNumShares);
+		currentPtr->setNumShares(currentPtr->getNumShares() - Front->p->getNumShares());
 
 		deleteOrder(action);
 		
-		if (Front->next = nullptr) {
-			match = false;
-			int t;
-			t = currentPtr->getNumShares - Front->p->getNumShares;
-			currentPtr->setNumShares(t);
-			inbalance(currentPtr);
-			break;
+		if (Front = nullptr) {
+			if (currentPtr->getNumShares() != 0)
+			{//nothing in the book but there're remaining shares
+				match = false; 
+				inbalance(currentPtr);
+			}
+			break;  
 		}
-
-		
-
-		} //match finish, there're remained shares, display message and break 
 
 	};//match going on
 	
-	if (currentPtr->getNumShares == nowFront->p->getNumShares) & (match) {} //match finish, break
+	if (currentPtr->getNumShares == Front->p->getNumShares) & (match=true) {
+	
+	} //match finish, break
 	else {} //match finish and display message:market inbalance
 	
 
