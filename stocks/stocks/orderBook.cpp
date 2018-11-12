@@ -3,11 +3,12 @@
 /*DEFINITIONS FOR ORDERBOOK FUNCTIONS*/
 
 Queue::Queue(){
-	bidFront = nullptr;
-	bidRear = nullptr;
-	askFront = nullptr;
-	askRear = nullptr;
-	size = 0;
+	aFront = nullptr;
+	aRear = nullptr;
+	bFront = nullptr;
+	bRear = nullptr;
+	aSize = 0;
+	bSize = 0;
 }
 /*
 Queue::~Queue(){
@@ -47,14 +48,20 @@ void Queue::dequeue(Order &info){// not quite sure &info
 }
 */
 
-bool Queue::isEmpty() const{
+// i indicates order action. i=1, this is a buy order, check if the Askbook is empty
+bool Queue::isEmpty(int i) const{
 	bool status;
+	int size;
+	if (i == 1) size = aSize;
+	else size = bSize;
+
 	if (size > 0) 
 		status = false;
 	else 
 		status = true;
 	return status;
 }
+
 /*
 void Queue::clearQ(){    // not quite sure p or *p
 	Order p;
@@ -98,14 +105,23 @@ void OrderBook::grabdata() {
 	}
 }
 
-
-void OrderBook::matchMarket(Order* o, int action)
+//action=1, this is a buy order and check the AskBook
+//action=-1, this is a sell order and check the BidBook
+void OrderBook::matchMarket(Order* currentPtr, int action)
 {	
-	queueNode* check;
-	if (action = 1) { check=
+	
+	// step 1: check it the book is empty
+	if (isEmpty(action)) {} // there is not match, display market inbalance messeage and exist
 
-	}//this is a buying request, so check the ask book
-	else {
+	// step 2: making match
+	if (action==1){ 
+		if (currentPtr->getNumShares > aFront->p->getNumShares) {} //match going on
+		else if
+			(currentPtr->getNumShares == aFront->p->getNumShares) {} //match finish
+		else
+		{} //match finish and market inbalance
+
+	
 
 	}
 

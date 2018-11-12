@@ -8,29 +8,30 @@
 
 class Queue {
 protected:
+
 	struct qNodeAsk{
 		Order* p;
 		qNodeAsk* next;
 	};
-	qNodeAsk* Front;
-	qNodeAsk* Rear;
+	qNodeAsk* aFront;
+	qNodeAsk* aRear;
 
 	struct qNodeBid {
 		Order* p;
 		qNodeBid* next;
 	};
-	qNodeBid* Front;
-	qNodeBid* Rear;
+	qNodeBid* bFront;
+	qNodeBid* bRear;
 	
-	int sizeAsk=0,sizeBid=0;
+	int aSize,bSize;
 
 public:
 	Queue();
 	~Queue();
 	void insertAskBook(Order*);
 	void insertBidBook(Order*);
-	void deleteOrder(Order*,int);
-	bool isEmpty() const;
+	void deleteOrder(Order*,int); // int indicates book type
+	bool isEmpty(int ) const;
 	void clearQ();
 };
 
