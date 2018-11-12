@@ -1,17 +1,11 @@
-#pragma once
-
-#include<string>
-#include <order.h>
-using namespace std;
+#include "order.h"
 
 //dynamic queue template
 
 template <class T>
-class queue 
-{
+class Queue {
 private:
-	struct queueNode
-	{
+	struct queueNode{
 		T* p;
 		queueNode* next;
 	};
@@ -20,30 +14,28 @@ private:
 	int size;
 
 public:
-	queue();
-	~queue();
+	Queue();
+	~Queue();
 	void enqueue(T*);
 	void dequeue(T &);
 	bool isEmpty() const;
 	bool isFull() const;
-	void clear();
+	void clearQ();
 };
 
 // inheritance ask/bid book
 
-class orderBook 
-{
+class OrderBook {
 private:
-	queue<order> bidBook, askBook; 
-
+	Queue<Order> bidBook, askBook; 
 public:
 	void grabdata(); 
-	void Disaplay(order, order); // when a deal is matched, display it on screan
+	void Disaplay(Order, Order); // when a deal is matched, display it on screan
 	
-	void matchMBid(order*); //open askBook
-	void matchMAsk(order*); //open bidBook
-	void matchLBid(order*);
-	void matchLAsk(order*);	
+	void matchMBid(Order*); //open askBook
+	void matchMAsk(Order*); //open bidBook
+	void matchLBid(Order*);
+	void matchLAsk(Order*);	
 
 };
 

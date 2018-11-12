@@ -1,53 +1,52 @@
-//this is for the order class
 #ifndef ORDER_H
 #define ORDER_H
-#include<string>
+#include <iostream>
+#include <string>
+#include <cmath>
 using namespace std;
+using std::string;
 
-class order
-{
+class Order{
 private:
 	int type; // 0:market order, 1:limited order
 	int action; //1:bid(buy), -1:ask(sell)
 	double price;
+	int numShares; //stores number of shares
 	string ID;
 
 public:
-	order();
-	~order();
-	int getType()
-	{
-		return type;
-	}
-	int getAction()
-	{
-		return action;
-	}
-	double getPrice()
-	{
-		return price;
-	}
-	string getID()
-	{
-		return ID;
-	}
-
-	void setType(int t)
-	{
+	Order();
+	~Order();
+	void setType(int t) {
 		type = t;
 	}
-	void setAction(int t)
-	{
+	void setAction(int t) {
 		action = t;
 	}
-	void setprice(double t)
-	{
+	void setPrice(double t) {
 		price = t;
 	}
-	void setID(string s)
-	{
+	void setNumShares(int t) {
+		numShares = t;
+	}
+	void setID(string s) {
 		ID = s;
 	}
-
+	int getType() {
+		return type;
+	}
+	int getAction() {
+		return action;
+	}
+	double getPrice() {
+		return price;
+	}
+	int getNumShares{
+		return numShares;
+	}
+	string getID() {
+		return ID;
+	}
 };
+
 #endif

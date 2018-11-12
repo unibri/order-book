@@ -1,37 +1,31 @@
-#include order.h
+#include "orderBook.h"
 
 //definitions for queue functions
-
-template <class T>
-queue<T>::queue()
-{
+/*template <class T>
+Queue<T>::Queue(){
 	front = nullptr;
 	rear = nullptr;
 	size = 0;
 }
 
 template <class T>
-queue<T>::~queue()
-{
+Queue<T>::~Queue(){
 	clear();
 }
 
 template <class T>
-void queue<T>::enqueue(T *info)
-{
+void Queue<T>::enqueue(T *info){
 	queueNode *newNode = nullptr;
 
 	newNode = new queueNode;
 	newNode->p = info;
 	newNode->next = nullptr;
 
-	if (isEmpty())
-	{
+	if (isEmpty()){
 		front = newNode;
 		rear = newNode;
 	}
-	else
-	{
+	else {
 		rear->next = newNode;
 		rear = newNode;
 	}
@@ -39,11 +33,9 @@ void queue<T>::enqueue(T *info)
 }
 
 template <class T>
-void queue<T>::dequeue(T &info) // not quite sure &info
-{
+void Queue<T>::dequeue(T &info){// not quite sure &info
 	queueNode *temp = nullptr;
-	if (!isEmpty())
-	{
+	if (!isEmpty()){
 		info = front->value;
 		temp = front;
 		front = front->next;
@@ -53,8 +45,7 @@ void queue<T>::dequeue(T &info) // not quite sure &info
 }
 
 template <class T>
-bool queue<T>::isEmpty() const
-{
+bool Queue<T>::isEmpty() const{
 	bool status;
 	if (size > 0) status = false;
 	else status = true;
@@ -62,8 +53,7 @@ bool queue<T>::isEmpty() const
 }
 
 template <class T>
-void queue<T>::clear()    // not quite sure p or *p
-{
+void Queue<T>::clearQ(){    // not quite sure p or *p
 	T p;
 	while (!isEmpty()) dequeue(p);
 }
