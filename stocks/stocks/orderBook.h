@@ -31,10 +31,10 @@ class OrderBook : public Queue {
 public:
 	void grabdata(); 
 	void display(Order, Order); // when a deal is matched, display it on screan
-	void matchMBid(Order*); //open askBook
-	void matchMAsk(Order*); //open bidBook
-	void matchLBid(Order*);
-	void matchLAsk(Order*);	
+	
+	// int stores actions: 1 bid, -1 ask
+	void matchMarket(Order*, int); 
+	void matchLimited(Order*, int); 
 
 };
 
