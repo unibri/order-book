@@ -10,8 +10,10 @@ protected:
 		Order* p;
 		queueNode* next;
 	};
-	queueNode* front;
-	queueNode* rear;
+	queueNode* bidFront;
+	queueNode* bidRear;
+	queueNode* askFront;
+	queueNode* askRear;
 	int size;
 
 public:
@@ -27,7 +29,6 @@ public:
 // inheritance ask/bid book
 
 class OrderBook : public Queue {
- 
 public:
 	void grabdata(); 
 	void display(Order, Order); // when a deal is matched, display it on screan
