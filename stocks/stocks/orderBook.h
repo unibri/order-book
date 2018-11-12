@@ -25,7 +25,7 @@ public:
 	~Queue();
 	void insertAskBook(Order*);
 	void insertBidBook(Order*);
-	void deleteOrder(Order*,int); // int indicates book type
+	void deleteOrder(int); // int indicates book type
 	bool isEmpty(int ) const;
 	void clearQ();
     
@@ -36,13 +36,15 @@ public:
 class OrderBook : public Queue {
 public:
 	void grabdata(); 
-	void display(Order, Order); // when a deal is matched, display it on screan
-	
+	void display(Order*, Order*); // when a deal is matched, display it on screan
+	void inbalance(Order*);
+
 	// int stores actions: 1 bid, -1 ask
 	void matchMarket(Order*, int); 
 	void matchLimited(Order*, int); 
 
-	void matchMBid(Order* o);
+	void inbanlance();
+	
 
 };
 
