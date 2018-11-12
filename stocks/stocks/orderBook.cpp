@@ -109,15 +109,4 @@ void OrderBook::matchMarket(Order* o, int action)
 
 	}
 
-/*
-void matchMBid(Order* o) {
-{
-queueNode* check;
-if (action = 1) { check=
 
-}//this is a buying request, so check the ask book
-else {
-
-}
-	
-}
