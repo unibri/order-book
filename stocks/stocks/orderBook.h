@@ -27,8 +27,7 @@ public:
 // inheritance ask/bid book
 
 class OrderBook : public Queue {
-private:
-	Queue* bidBook, askBook; 
+ 
 public:
 	void grabdata(); 
 	void display(Order, Order); // when a deal is matched, display it on screan
