@@ -11,7 +11,7 @@ private:
 	int action; //1:bid(buy), -1:ask(sell)
 	double price;
 	string ID;
-
+	long int share;
 public:
 	order();
 	~order();
