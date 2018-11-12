@@ -1,4 +1,6 @@
-#pragma once
+#ifndef ORDERBOOK_H
+#define ORDERBOOK_H
+
 #include "order.h"
 
 //dynamic queue template
@@ -39,4 +41,5 @@ public:
 
 };
 
+#endif
 

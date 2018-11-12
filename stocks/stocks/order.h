@@ -1,3 +1,5 @@
+#ifndef ORDER_H
+#define ORDER_H
 #pragma once
 #include <iostream>
 #include <string>
@@ -55,10 +57,8 @@ public:
 	}
 	//OVERLOADED OPERATORS
 	friend ostream& operator << (ostream& os, const Order&);
-	friend istream& operator >> (istream& is, Order* O) {
-		is >> O->type >> O->action>> O->price >>
-			O->numShares >> O->ID;
-		return is;
-	}
+	friend istream& operator >> (istream&, Order*);
 };
 
+
+#endif

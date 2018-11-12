@@ -123,6 +123,7 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="orderBook.cpp" />
+    <ClCompile Include="order.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="order.h" />
