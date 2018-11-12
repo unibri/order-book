@@ -8,21 +8,15 @@
 
 class Queue {
 protected:
-	struct qNodeAsk{
+	struct queueNode{
 		Order* p;
-		qNodeAsk* next;
+		queueNode* next;
 	};
-	qNodeAsk* Front;
-	qNodeAsk* Rear;
-
-	struct qNodeBid {
-		Order* p;
-		qNodeBid* next;
-	};
-	qNodeBid* Front;
-	qNodeBid* Rear;
-	
-	int sizeAsk=0,sizeBid=0;
+	queueNode* bidFront;
+	queueNode* bidRear;
+	queueNode* askFront;
+	queueNode* askRear;
+	int size;
 
 public:
 	Queue();
