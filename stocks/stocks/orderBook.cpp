@@ -98,15 +98,8 @@ void OrderBook::grabdata() {
 	}
 }
 
-
-void OrderBook::matchMBid(Order* o) {
-	if (!askFront) { //if the ask book is empty 
-		//then we add to bid queue, because there cannot be a match
-	}
-
-	//if it is not empty, we check for a match
-		//if there is a match, we match and display
-		//if there is a match but does not match the # of shares
-			//update order (bid) amount
-	//if there is not match, we add to bid queue
+/*
+void matchMBid(Order* o) {
+	
 }
+*/
