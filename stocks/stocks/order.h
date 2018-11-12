@@ -41,7 +41,7 @@ public:
 	double getPrice() {
 		return price;
 	}
-	int getNumShares{
+	int getNumShares(){
 		return numShares;
 	}
 	string getID() {

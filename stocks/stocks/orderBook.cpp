@@ -1,7 +1,7 @@
 #include "orderBook.h"
 
 //definitions for queue functions
-/*template <class T>
+template <class T>
 Queue<T>::Queue(){
 	front = nullptr;
 	rear = nullptr;
