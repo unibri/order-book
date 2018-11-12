@@ -39,6 +39,8 @@ public:
 	void matchMarket(Order*, int); 
 	void matchLimited(Order*, int); 
 
+	void matchMBid(Order* o);
+
 };
 
 #endif
