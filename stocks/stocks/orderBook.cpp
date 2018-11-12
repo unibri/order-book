@@ -109,13 +109,13 @@ void OrderBook::grabdata() {
 
 //action=1, this is a buy order and check the AskBook
 //action=-1, this is a sell order and check the BidBook
-void OrderBook::matchMarket(Order* currentPtr, int action)
+void OrderBook::matchMarket(Order* currentPtr)
 {	
 	queueNode *Front, *Rear;
 	bool match;
 
 	// decide which book to check
-	if (action == 1) {
+	if (currentPtr->getAction() == 1) {
 		Front = askFront;
 		Rear = askRear;
 	}
@@ -165,3 +165,16 @@ void OrderBook::inbalance(Order* p)
 		cout << "Market Inbalance - Ask Order ID:" << p->getID() << " Volume:" << p->getNumShares << " - unmatched";
 };
 
+void OrderBook::deleteOrder(int action) {
+	queueNode* temp;
+	if (action == 1) {
+		temp = askFront;
+		askFront = askFront->next;
+		delete temp;
+	}
+	else {
+		temp = bidFront;
+		bidFront = bidFront->next;
+		delete temp;
+	}
+}
