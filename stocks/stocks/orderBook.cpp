@@ -98,9 +98,6 @@ void OrderBook::grabdata() {
 	}
 }
 
-/*
-void matchMBid(Order* o) {
-
 
 void OrderBook::matchMarket(Order* o, int action)
 {	
@@ -111,6 +108,16 @@ void OrderBook::matchMarket(Order* o, int action)
 	else {
 
 	}
+
+/*
+void matchMBid(Order* o) {
+{
+queueNode* check;
+if (action = 1) { check=
+
+}//this is a buying request, so check the ask book
+else {
+
+}
 	
 }
-*/
