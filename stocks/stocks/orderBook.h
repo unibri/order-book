@@ -1,4 +1,6 @@
-#pragma once
+#ifndef ORDERBOOK_H
+#define ORDERBOOK_H
+
 #include "order.h"
 
 //dynamic queue template
@@ -18,7 +20,7 @@ protected:
 
 public:
 	Queue();
-	virtual ~Queue();
+	~Queue();
 	void enqueue(Order*);
 	void dequeue(Order&);
 	bool isEmpty() const;
@@ -39,4 +41,5 @@ public:
 
 };
 
+#endif
 

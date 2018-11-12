@@ -98,6 +98,9 @@ void OrderBook::grabdata() {
 	}
 }
 
+/*
+void matchMBid(Order* o) {
+
 
 void OrderBook::matchMarket(Order* o, int action)
 {	
@@ -110,3 +113,4 @@ void OrderBook::matchMarket(Order* o, int action)
 	}
 	
 }
+*/
