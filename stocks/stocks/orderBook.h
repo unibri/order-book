@@ -1,18 +1,13 @@
 #pragma once
-
-#include<string>
-#include <order.h>
-using namespace std;
+#include "order.h"
 
 //dynamic queue template
 
-template <class T>
-class queue 
-{
-private:
-	struct queueNode
-	{
-		T* p;
+
+class Queue {
+protected:
+	struct queueNode{
+		Order* p;
 		queueNode* next;
 	};
 	queueNode* front;
@@ -20,29 +15,27 @@ private:
 	int size;
 
 public:
-	queue();
-	~queue();
-	void insert(T*);
-	void delate(T &);
+	Queue();
+	virtual ~Queue();
+	void enqueue(Order*);
+	void dequeue(Order&);
 	bool isEmpty() const;
-	void clear();
+	bool isFull() const;
+	void clearQ();
 };
 
 // inheritance ask/bid book
 
-class orderBook 
-{
+class OrderBook : public Queue {
 private:
-	queue<order> bidBook, askBook; 
-
+	Queue* bidBook, askBook; 
 public:
 	void grabdata(); 
-	void Disaplay(order, order); // when a deal is matched, display it on screan
-	
-	//int stores two actions: 1 bid(buy), -1 ask(sell)
-	void matchMarket(order*, int); //for market orders 
-	void matchLimited(order*, int); //dor limited orders
-
+	void display(Order, Order); // when a deal is matched, display it on screan
+	void matchMBid(Order*); //open askBook
+	void matchMAsk(Order*); //open bidBook
+	void matchLBid(Order*);
+	void matchLAsk(Order*);	
 
 };
 

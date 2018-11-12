@@ -1,71 +1,103 @@
-#include <order.h>
-#include <orderBook.h>
+#include "orderBook.h"
 
-using namespace std;
-//definitions for queue functions
+/*DEFINITIONS FOR ORDERBOOK FUNCTIONS*/
 
-template <class T>
-queue<T>::queue()
-{
+Queue::Queue(){
 	front = nullptr;
 	rear = nullptr;
 	size = 0;
 }
-
-template <class T>
-queue<T>::~queue()
-{
-	clear();
+/*
+Queue::~Queue(){
+	clearQ();
 }
+*/
 
-template <class T>
-void queue<T>::insert(T *info)
-
+void Queue::enqueue(Order *info){
 	queueNode *newNode = nullptr;
 
 	newNode = new queueNode;
 	newNode->p = info;
 	newNode->next = nullptr;
 
-	if (isEmpty())
-	{
+	if (isEmpty()){
 		front = newNode;
 		rear = newNode;
 	}
-	else
-	{
+	else {
 		rear->next = newNode;
 		rear = newNode;
 	}
 	size++;
 }
 
-template <class T>
-void queue<T>::delate(T &info) // not quite sure &info
-{
+/*
+void Queue::dequeue(Order &info){// not quite sure &info
 	queueNode *temp = nullptr;
-	if (!isEmpty())
-	{
-		info = front->value;
+	if (!isEmpty()){
+		info = front->p;
 		temp = front;
 		front = front->next;
 		delete temp;
 		size--;
 	}
 }
+*/
 
-template <class T>
-bool queue<T>::isEmpty() const
-{
+bool Queue::isEmpty() const{
 	bool status;
-	if (size > 0) status = false;
-	else status = true;
+	if (size > 0) 
+		status = false;
+	else 
+		status = true;
 	return status;
 }
-
-template <class T>
-void queue<T>::clear()    // not quite sure p or *p
-{
-	T p;
+/*
+void Queue::clearQ(){    // not quite sure p or *p
+	Order p;
 	while (!isEmpty()) dequeue(p);
 }
+*/
+
+/*DEFINITIONS FOR ORDERBOOK FUNCTIONS*/
+
+void OrderBook::grabdata() {
+	ifstream data;
+	string fileName;
+	//Asks user to type file name and opens file
+	cout << "Enter file name: ";
+	cin >> fileName;
+	data.open(fileName.c_str());
+	//Checking for error
+	if (data.fail()) {
+		cerr << "Error opening file";
+		exit(3);
+	}
+	Order *orderPtr; //OrderPtr
+	string line;
+	if (data) {
+		while (data) {
+			orderPtr = new Order; //new Order 
+			data >> orderPtr;
+			if (orderPtr->getAction() == 0) { //if market order action =(0)
+				if (orderPtr->getType() == 1) { //if type = bid(buy) (1)
+					//call matchMBid()
+				}
+				else { //type = sell(ask) (-1_
+					//call matchMAsk()
+				}
+			}
+			else { //if it is a limited order (1)
+				//search for match search for match
+			}
+			getline(data, line); //moves on to the next line	
+		}
+	}
+}
+/*
+void matchMBid(Order* o) {
+	if (bidBook->isEmpty()) {
+
+	}
+}
+*/

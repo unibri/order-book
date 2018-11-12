@@ -1,10 +1,9 @@
-#include<iostream>
-#include<string>
+#include "orderBook.h" //which already includes order.h
 
-using namespace std;
+int main() {
+	OrderBook *book;
+	book = new OrderBook;
+	book->grabdata();
 
-main()
-{
-	orderBook ask, bid;
-
+	return 0;
 }

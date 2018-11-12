@@ -1,85 +1,60 @@
-//this is for the order class
-#ifndef ORDER_H
-#define ORDER_H
-#include<string>
+#pragma once
+#include <iostream>
+#include <string>
+#include <cmath>
+#include <fstream>
 using namespace std;
+using std::string;
 
-class order
-{
-protected:
+class Order{
+private:
 	int type; // 0:market order, 1:limited order
 	int action; //1:bid(buy), -1:ask(sell)
 	double price;
+	int numShares; //stores number of shares
 	string ID;
-	long int share;
-public:
-	order();
-	~order();
-	int getType()
-	{
-		return type;
-	}
-	int getAction()
-	{
-		return action;
-	}
-	double getPrice()
-	{
-		return price;
-	}
-	string getID()
-	{
-		return ID;
-	}
-	long int getShare()
-	{
-		return share;
-	}
 
-	void setType(int t)
-	{
+public:
+	Order();
+	~Order();
+	//MUTATOR FUNCTIONS
+	void setType(int t) {
 		type = t;
 	}
-	void setAction(int t)
-	{
+	void setAction(int t) {
 		action = t;
 	}
-	void setprice(double t)
-	{
+	void setPrice(double t) {
 		price = t;
 	}
-	void setID(string s)
-	{
+	void setNumShares(int t) {
+		numShares = t;
+	}
+	void setID(string s) {
 		ID = s;
 	}
-
+	//ACCESSOR FUNCTIONS
+	int getType() {
+		return type;
+	}
+	int getAction() {
+		return action;
+	}
+	double getPrice() {
+		return price;
+	}
+	int getNumShares(){
+		return numShares;
+	}
+	string getID() {
+		return ID;
+	}
+	//OVERLOADED OPERATORS
+	friend ostream& operator << (ostream& os, const Order&);
+	friend istream& operator >> (istream& is, Order* O) {
+		is >> O->type >> O->action>> O->price >>
+			O->numShares >> O->ID;
+		return is;
+	}
 };
 
-class ask : public order
-{
-public:
-	bool operator >(order& r)
-	{
-		return share < r.getShare();  // adjust to askBook queue priority
-	}
-	
-	bool operator =(order& r)
-	{
-		return share = r.getShare();
-	}
-
-class bid : public order
-{
-public:
-	bool operator >(order& r)
-	{
-		return share > r.getShare();  
-	}
-	
-	bool operator =(order& r)
-	{
-		return share = r.getShare();
-	}
-
-};
-#endif
