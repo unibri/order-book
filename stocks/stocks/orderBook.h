@@ -1,12 +1,13 @@
+#pragma once
 #include "order.h"
 
 //dynamic queue template
 
-template <class T>
+
 class Queue {
-private:
+protected:
 	struct queueNode{
-		T* p;
+		Order* p;
 		queueNode* next;
 	};
 	queueNode* front;
@@ -15,9 +16,9 @@ private:
 
 public:
 	Queue();
-	~Queue();
-	void enqueue(T*);
-	void dequeue(T &);
+	virtual ~Queue();
+	void enqueue(Order*);
+	void dequeue(Order&);
 	bool isEmpty() const;
 	bool isFull() const;
 	void clearQ();
@@ -25,13 +26,12 @@ public:
 
 // inheritance ask/bid book
 
-class OrderBook {
+class OrderBook : public Queue {
 private:
-	Queue<Order> bidBook, askBook; 
+	Queue* bidBook, askBook; 
 public:
 	void grabdata(); 
-	void Disaplay(Order, Order); // when a deal is matched, display it on screan
-	
+	void display(Order, Order); // when a deal is matched, display it on screan
 	void matchMBid(Order*); //open askBook
 	void matchMAsk(Order*); //open bidBook
 	void matchLBid(Order*);

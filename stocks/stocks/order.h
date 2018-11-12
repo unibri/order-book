@@ -1,8 +1,8 @@
-#ifndef ORDER_H
-#define ORDER_H
+#pragma once
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <fstream>
 using namespace std;
 using std::string;
 
@@ -17,6 +17,7 @@ private:
 public:
 	Order();
 	~Order();
+	//MUTATOR FUNCTIONS
 	void setType(int t) {
 		type = t;
 	}
@@ -32,6 +33,7 @@ public:
 	void setID(string s) {
 		ID = s;
 	}
+	//ACCESSOR FUNCTIONS
 	int getType() {
 		return type;
 	}
@@ -47,6 +49,12 @@ public:
 	string getID() {
 		return ID;
 	}
+	//OVERLOADED OPERATORS
+	friend ostream& operator << (ostream& os, const Order&);
+	friend istream& operator >> (istream& is, Order* O) {
+		is >> O->type >> O->action>> O->price >>
+			O->numShares >> O->ID;
+		return is;
+	}
 };
 
-#endif
