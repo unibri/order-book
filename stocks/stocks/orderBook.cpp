@@ -3,8 +3,10 @@
 /*DEFINITIONS FOR ORDERBOOK FUNCTIONS*/
 
 Queue::Queue(){
-	front = nullptr;
-	rear = nullptr;
+	bidFront = nullptr;
+	bidRear = nullptr;
+	askFront = nullptr;
+	askRear = nullptr;
 	size = 0;
 }
 /*
@@ -13,6 +15,7 @@ Queue::~Queue(){
 }
 */
 
+/*
 void Queue::enqueue(Order *info){
 	queueNode *newNode = nullptr;
 
@@ -30,7 +33,7 @@ void Queue::enqueue(Order *info){
 	}
 	size++;
 }
-
+*/
 /*
 void Queue::dequeue(Order &info){// not quite sure &info
 	queueNode *temp = nullptr;
@@ -96,8 +99,6 @@ void OrderBook::grabdata() {
 }
 /*
 void matchMBid(Order* o) {
-	if (bidBook->isEmpty()) {
-
-	}
+	
 }
 */
