@@ -36,12 +36,12 @@ public:
 class OrderBook : public Queue {
 public:
 	void grabdata(); 
-	void display(Order*, Order*); // when a deal is matched, display it on screan
+	void display(Order*, Order*); // display match info
 	void inbalance(Order*);
 	void matchMarket(Order*); 
 	void matchLimited(Order*); 
-	void inbanlance();
-
+	void displayAskbook();
+	void displayBidbook();
 };
 
 #endif

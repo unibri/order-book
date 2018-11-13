@@ -148,43 +148,49 @@ void OrderBook::matchMarket(Order* currentPtr)
 		Rear = bidRear;
 	}
 	// step 1: check if the book is empty
-	if (isEmpty(action)) {} // there is not match, display messeage "Market Inbalance - XXX order ID: XXX Volume: XXX - unmatched"
-
-	// step 2: making match	
-	match = true;
-	while (currentPtr->getNumShares() > Front->p->getNumShares())
+	if (Front == nullptr) { inbalance(currentPtr); } // there is not match, display messeage "Market Inbalance - XXX order ID: XXX Volume: XXX - unmatched"
+	else {
+		// step 2: making match	
+		match = true;
+		while (currentPtr->getNumShares() > Front->p->getNumShares())
 		{
-		display(currentPtr,Front->p);  //record the transaction;
-		currentPtr->setNumShares(currentPtr->getNumShares() - Front->p->getNumShares());
+			display(currentPtr, Front->p);  //record the transaction;
+			currentPtr->setNumShares(currentPtr->getNumShares() - Front->p->getNumShares());
 
-		deleteOrder(currentPtr->getAction());
-		
-		if (Front = nullptr) {
-			if (currentPtr->getNumShares() != 0)
-			{//nothing in the book but there're remaining shares
-				match = false; 
-				inbalance(currentPtr);
+			deleteOrder(currentPtr->getAction());
+
+			if (Front = nullptr) {
+				if (currentPtr->getNumShares() != 0)
+				{//nothing in the book but there're remaining shares		
+					inbalance(currentPtr);
+				}
+				match = false;
+				break;
 			}
-			break;  
+
+		};//match going on
+		if (match)
+		{
+			display(currentPtr, Front->p);
+			if (currentPtr->getNumShares() == Front->p->getNumShares()) {
+				deleteOrder(currentPtr->getAction());
+			} //perfect match, just delete the book order
+			else {
+				int t;
+				t = Front->p->getNumShares() - currentPtr->getNumShares();
+				Front->p->setNumShares(t);			
+			} //imperfect match, need to update the share info of book order
 		}
-
-	};//match going on
-	
-	if (currentPtr->getNumShares == Front->p->getNumShares) & (match=true) {
-	
-	} //match finish, break
-	else {} //match finish and display message:market inbalance
-	
-
+	}
 	}
 
 void OrderBook::inbalance(Order* p)
 {
 	//display messeage "Market Inbalance - XXX order ID: XXX Volume: XXX - unmatched"
 	if (p->getAction() == 1)
-		cout << "Market Inbalance - Buy Order ID:" << p->getID()<< " Volume:" << p->getNumShares << " - unmatched";
+		cout << "Market Inbalance - Buy Order ID:" << p->getID()<< " Volume:" << p->getNumShares() << " - unmatched";
 	else 
-		cout << "Market Inbalance - Ask Order ID:" << p->getID() << " Volume:" << p->getNumShares << " - unmatched";
+		cout << "Market Inbalance - Ask Order ID:" << p->getID() << " Volume:" << p->getNumShares() << " - unmatched";
 };
 
 void OrderBook::matchLimited(Order* order) {
@@ -258,6 +264,18 @@ void OrderBook::matchLimited(Order* order) {
 		}
 	}
 }
+
+//process the transactions (matches) and record them in an audit (transaction) file as follows: Buyer ID, Seller ID, Price, Shares, Time Stamp 
+void OrderBook::display(Order* current, Order* book) {
+	if (current->getAction()==1){
+		//1 means bid order, so display buyerID first
+		cout << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << "time stamp";
+	}
+	else{
+		cout << book->getID() << "  " << current->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << "time stamp";
+	}
+}
+
 
 void Queue::display() {
 	cout << "YEEEEER" << endl;
