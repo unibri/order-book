@@ -23,8 +23,8 @@ protected:
 public:
 	Queue();
 	~Queue();
-	void insertAskBook(Order*);
-	void insertBidBook(Order*);
+	void insertAskBook(queueNode*);
+	void insertBidBook(queueNode*);
 	void deleteOrder(int); // int indicates book type
 	bool isEmpty(int ) const;
 	void clearQ();
@@ -40,8 +40,8 @@ public:
 	void inbalance(Order*);
 
 	// int stores actions: 1 bid, -1 ask
-	void matchMarket(Order*, int); 
-	void matchLimited(Order*, int); 
+	void matchMarket(Order*); 
+	void matchLimited(Order*); 
 
 	void inbanlance();
 	

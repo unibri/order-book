@@ -90,12 +90,7 @@ void OrderBook::grabdata() {
 			orderPtr = new Order; //new Order 
 			data >> orderPtr;
 			if (orderPtr->getAction() == 0) { //if market order action =(0)
-				if (orderPtr->getType() == 1) { //if type = bid(buy) (1)
-					//call matchMBid()
-				}
-				else { //type = sell(ask) (-1_
-					//call matchMAsk()
-				}
+				matchMarket(orderPtr);
 			}
 			else { //if it is a limited order (1)
 				//search for match search for match
@@ -174,5 +169,75 @@ void OrderBook::deleteOrder(int action) {
 		temp = bidFront;
 		bidFront = bidFront->next;
 		delete temp;
+	}
+}
+
+void OrderBook::matchLimited(Order* order) {
+	bool match = false;
+	if (order->getAction() == 1) {//it is a bid/buy
+		if (askHead == nullptr) //then there is nothing to buy from, so we queue it!
+			insertBidBook(order);  //**NEED TO DEFINE
+		else {
+			//we look through the ask queue
+			queueNode* ptr = askHead; //used to go through queue
+			queueNode* prev = nullptr;
+			while (ptr != nullptr && ptr->p->getPrice() >= order->getPrice()) {
+				//moves through the queue until we get to the limit price (wont pay more)
+				prev = ptr;
+				ptr = ptr->next;
+			}
+			//once we found the match, we check if the ask is exact number of shares
+			if(ptr->p->getNumShares()== order->getNumShares()){ //if it is
+				display(); //we display a match, **NEED TO DEFINE
+				deleteOrder(ptr); //deletes the node we matched with **NEED OVERLOAD FUNCTION
+				match = true; //because we had exact match
+			}
+			else if(ptr->p->getNumShares() > order->getNumShares()){ //it is not an exact match
+				display(); //display what we matched
+				order->setNumShares(order->getNumShares() - ptr->p->getNumShares()); //update order
+				matchLimited(order); //we send order back to check for another match
+			}
+			else if (ptr->p->getNumShares() < order->getNumShares()) { //it is not exact BUT we matched, so we update what the ptr is pointing to
+				display(); //display what we matched
+				ptr->p->setNumShares(ptr->p->getNumShares() - order->getNumShares()); //update order
+				//no need send anything back because we updated the order ptr was pointing to
+				match = true; //because we had more shares than we needed
+			}
+			if (match == false)//we exhausted all possibilities and still no match
+				insertBidBook(order);
+
+		}
+	}
+	else { //it is a ask/sell
+		if (bidFront = nullptr)//it is empty
+			insertAskBook(order);
+		else {
+			//we look through the bid queue
+			queueNode* ptr = bidHead; //used to go through queue
+			queueNode* prev = nullptr;
+			//descending queue, so we go through until we find price thats less than or equal
+			while (ptr != nullptr && order->getPrice() <= ptr->p->getPrice()) {
+				prev = ptr;
+				ptr = ptr->next;
+			}
+			if (ptr->p->getNumShares() == order->getNumShares()) { //if it is
+				display(); //we display a match, **NEED TO DEFINE
+				deleteOrder(ptr); //deletes the node we matched with **NEED OVERLOAD FUNCTION
+				match = true; //because we had exact match
+			}
+			else if (ptr->p->getNumShares() > order->getNumShares()) { //it is not an exact match
+				display(); //display what we matched
+				order->setNumShares(order->getNumShares() - ptr->p->getNumShares()); //update order
+				matchLimited(order); //we send order back to check for another match
+			}
+			else if (ptr->p->getNumShares() < order->getNumShares()) { //it is not exact BUT we matched, so we update what the ptr is pointing to
+				display(); //display what we matched
+				ptr->p->setNumShares(ptr->p->getNumShares() - order->getNumShares()); //update order
+				//no need send anything back because we updated the order ptr was pointing to
+				match = true; //because we had more shares than we needed
+			}
+			if (match == false)//we exhausted all possibilities and still no match
+				insertAskBook(order);
+		}
 	}
 }
