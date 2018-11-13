@@ -171,7 +171,62 @@ void OrderBook::deleteOrder(int action) {
 		delete temp;
 	}
 }
+void OrderBook::insertBidBook(Order* order) {
+	queueNode* newNode;
+	queueNode* nodePtr;
+	queueNode* prevNode;
+	newOrder = new queueNode; 
+	newOrder->p = order; 
 
+	if (!gradeHead) { //if there are no nodes
+		bidFront = newNode; //sets bidFront
+		newNode->next = nullptr; //there is no next node; 
+	}
+	else {
+		nodePtr = bidFront; //start at the head
+		prevNode = nullptr;
+		while (nodePtr != nullptr &&  order->getPrice() <= nodePtr->p->getPrice()) { //order price is < book price
+			prevNode = nodePtr; //prevNode is the node nodePtr is pointing to
+			nodePtr = nodePtr->next;  //nodePtr moves on to the next node
+		}
+		if (prevNode == nullptr) { //meaning order o has the highest price
+			bidFront = newNode;  //the newNode becomes the bidFront
+			newNode->next = nodePtr;
+		}
+		else {
+			prevNode->next = newNode; //insert newNode next to prevNode
+			newNode->next = nodePtr;
+		}
+	}
+}
+void OrderBook::insertAskBook(Order* order) {
+	queueNode* newNode;
+	queueNode* nodePtr;
+	queueNode* prevNode;
+	newOrder = new queueNode;
+	newOrder->p = order;
+
+	if (!gradeHead) { //if there are no nodes
+		askFront = newNode; //sets bidFront
+		newNode->next = nullptr; //there is no next node; 
+	}
+	else {
+		nodePtr = askFront; //start at the head
+		prevNode = nullptr;
+		while (nodePtr != nullptr &&  order->getPrice() >= nodePtr->p->getPrice()) { //order price is < book price
+			prevNode = nodePtr; //prevNode is the node nodePtr is pointing to
+			nodePtr = nodePtr->next;  //nodePtr moves on to the next node
+		}
+		if (prevNode == nullptr) { //meaning order o has the highest price
+			askFront = newNode;  //the newNode becomes the bidFront
+			newNode->next = nodePtr;
+		}
+		else {
+			prevNode->next = newNode; //insert newNode next to prevNode
+			newNode->next = nodePtr;
+		}
+	}
+}
 void OrderBook::matchLimited(Order* order) {
 	bool match = false;
 	if (order->getAction() == 1) {//it is a bid/buy

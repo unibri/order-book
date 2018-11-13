@@ -23,8 +23,8 @@ protected:
 public:
 	Queue();
 	~Queue();
-	void insertAskBook(queueNode*);
-	void insertBidBook(queueNode*);
+	void insertAskBook(Order*);
+	void insertBidBook(Order*);
 	void deleteOrder(int); // int indicates book type
 	bool isEmpty(int ) const;
 	void clearQ();
