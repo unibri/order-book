@@ -25,6 +25,7 @@ public:
 	~Queue();
 	void insertAskBook(Order*);
 	void insertBidBook(Order*);
+	void deleteOrder(queueNode*); //overloaded deleteOrder functions. looks through askbook/bidbook
 	void deleteOrder(int); // int indicates book type
 	bool isEmpty(int ) const;
 	void clearQ();

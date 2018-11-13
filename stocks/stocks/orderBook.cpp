@@ -157,7 +157,7 @@ void OrderBook::inbalance(Order* p)
 	else 
 		cout << "Market Inbalance - Ask Order ID:" << p->getID() << " Volume:" << p->getNumShares << " - unmatched";
 };
-
+//basically a pop function, deletes first in queue
 void OrderBook::deleteOrder(int action) {
 	queueNode* temp;
 	if (action == 1) {
@@ -171,6 +171,11 @@ void OrderBook::deleteOrder(int action) {
 		delete temp;
 	}
 }
+//deletes specified node from queue
+void OrderBook::deleteOrder(queueNode* orderPtr) {
+
+}
+//inserts into bid book in descending order
 void OrderBook::insertBidBook(Order* order) {
 	queueNode* newNode;
 	queueNode* nodePtr;
@@ -199,6 +204,7 @@ void OrderBook::insertBidBook(Order* order) {
 		}
 	}
 }
+//inserts into ask book in ascending order
 void OrderBook::insertAskBook(Order* order) {
 	queueNode* newNode;
 	queueNode* nodePtr;
@@ -207,18 +213,18 @@ void OrderBook::insertAskBook(Order* order) {
 	newOrder->p = order;
 
 	if (!gradeHead) { //if there are no nodes
-		askFront = newNode; //sets bidFront
+		askFront = newNode; //sets askfront
 		newNode->next = nullptr; //there is no next node; 
 	}
 	else {
 		nodePtr = askFront; //start at the head
 		prevNode = nullptr;
-		while (nodePtr != nullptr &&  order->getPrice() >= nodePtr->p->getPrice()) { //order price is < book price
+		while (nodePtr != nullptr &&  order->getPrice() >= nodePtr->p->getPrice()) { //order price is >= book price
 			prevNode = nodePtr; //prevNode is the node nodePtr is pointing to
 			nodePtr = nodePtr->next;  //nodePtr moves on to the next node
 		}
 		if (prevNode == nullptr) { //meaning order o has the highest price
-			askFront = newNode;  //the newNode becomes the bidFront
+			askFront = newNode;  //the newNode becomes the askFront
 			newNode->next = nodePtr;
 		}
 		else {
