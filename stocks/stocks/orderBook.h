@@ -25,10 +25,9 @@ public:
 	~Queue();
 	void insertAskBook(Order*);
 	void insertBidBook(Order*);
-	void deleteOrder(queueNode*); //overloaded deleteOrder functions. looks through askbook/bidbook
+	void deleteOrder(queueNode*); //overloaded deleteOrder functions. looks through q
 	void deleteOrder(int); // int indicates book type
-	bool isEmpty(int ) const;
-	void clearQ();
+	void display(); //used for debugging
     
 };
 
@@ -39,13 +38,9 @@ public:
 	void grabdata(); 
 	void display(Order*, Order*); // when a deal is matched, display it on screan
 	void inbalance(Order*);
-
-	// int stores actions: 1 bid, -1 ask
 	void matchMarket(Order*); 
 	void matchLimited(Order*); 
-
 	void inbanlance();
-	
 
 };
 

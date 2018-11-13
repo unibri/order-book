@@ -4,6 +4,6 @@ int main() {
 	OrderBook *book;
 	book = new OrderBook;
 	book->grabdata();
-
+	system("pause");
 	return 0;
 }
