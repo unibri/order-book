@@ -42,6 +42,7 @@ public:
 	void matchLimited(Order*); 
 	void displayAskbook();
 	void displayBidbook();
+	void timeDelay(double t);
 };
 
 #endif

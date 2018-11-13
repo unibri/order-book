@@ -267,6 +267,9 @@ void OrderBook::matchLimited(Order* order) {
 
 //process the transactions (matches) and record them in an audit (transaction) file as follows: Buyer ID, Seller ID, Price, Shares, Time Stamp 
 void OrderBook::display(Order* current, Order* book) {
+	double t;
+	t = rand(); // for time stamp, i guess??
+
 	if (current->getAction()==1){
 		//1 means bid order, so display buyerID first
 		cout << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << "time stamp";
@@ -276,6 +279,15 @@ void OrderBook::display(Order* current, Order* book) {
 	}
 }
 
+
+
+void OrderBook::timeDelay(double t) {
+	time_t initial, final;  time_t ltime;  initial = time(&ltime);  final = initial + t;
+
+	while (time(&ltime) < final) {}
+
+	return;
+}
 
 void Queue::display() {
 	cout << "YEEEEER" << endl;

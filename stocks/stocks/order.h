@@ -9,6 +9,8 @@
 #include <cstring>
 #include <stdlib.h>     /* exit, EXIT_FAILURE */
 #include <fstream>
+#include <ctime> 
+#include <random>
 using namespace std;
 using std::string;
 
