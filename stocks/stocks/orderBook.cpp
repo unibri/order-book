@@ -128,7 +128,7 @@ void OrderBook::matchMarket(Order* currentPtr)
 		display(currentPtr,Front->p);  //record the transaction;
 		currentPtr->setNumShares(currentPtr->getNumShares() - Front->p->getNumShares());
 
-		deleteOrder(action);
+		deleteOrder(currentPtr->getAction());
 		
 		if (Front = nullptr) {
 			if (currentPtr->getNumShares() != 0)
