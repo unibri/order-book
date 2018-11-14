@@ -207,8 +207,8 @@ void OrderBook::matchMarket(Order* currentPtr)
 			display(currentPtr, Front->p);  //record the transaction;
 			currentPtr->setNumShares(currentPtr->getNumShares() - Front->p->getNumShares());
 			deleteOrder(currentPtr->getAction());
-			/*
-			//for debug/
+
+			//for debug
 			if (currentPtr->getAction() == 1) {
 				Front = askFront;
 				Rear = askRear;
