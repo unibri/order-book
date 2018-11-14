@@ -322,7 +322,7 @@ void OrderBook::display(Order* current, Order* book) {
 		cout << current->getID() << "  " << book->getID() << "  $" << book->getPrice() << "  " << current->getNumShares() << "  " << curTime <<endl;
 	}
 	else{
-		cout << book->getID() << "  " << current->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << curTime <<endl;
+		cout << book->getID() << "  " << current->getID() << "  $" << book->getPrice() << "  " << current->getNumShares() << "  " << curTime <<endl;
 	}
 }
 
@@ -332,10 +332,10 @@ void OrderBook::display(Order* current, Order* book, int share) {
 
 	if (current->getAction() == 1) {
 		//1 means bid order, so display buyerID first
-		cout << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << share << "  " << curTime << endl;
+		cout << current->getID() << "  " << book->getID() << "  $" << book->getPrice() << "  " << share << "  " << curTime << endl;
 	}
 	else {
-		cout << book->getID() << "  " << current->getID() << "  " << book->getPrice() << "  " << share << "  " << curTime << endl;
+		cout << book->getID() << "  " << current->getID() << "  $" << book->getPrice() << "  " << share << "  " << curTime << endl;
 	}
 };
 
