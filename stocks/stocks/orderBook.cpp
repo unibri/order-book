@@ -1,6 +1,5 @@
 #include "orderBook.h"
 
-double seconds; //global var
 /*DEFINITIONS FOR Queue FUNCTIONS*/
 
 Queue::Queue(){
@@ -95,6 +94,7 @@ void Queue::insertAskBook(Order* order) {
 /*DEFINITIONS FOR ORDERBOOK FUNCTIONS*/
 
 void OrderBook::grabdata() {
+	double seconds;
 	cout << "Enter the smulation delay in fraction of a second: ";
 	cin >> seconds;
 	ifstream data;
@@ -114,6 +114,7 @@ void OrderBook::grabdata() {
 		while (data) {
 			orderPtr = new Order; //new Order 
 			data >> orderPtr;
+			timeDelay(seconds);
 			if (orderPtr->getType() == 0) { //if market order action =(0)
 				matchMarket(orderPtr);
 			}
@@ -197,7 +198,6 @@ void OrderBook::matchMarket(Order* currentPtr)
 }
 
 void OrderBook::inbalance(Order* p){
-	timeDelay(seconds);
 	//display messeage "Market Inbalance - XXX order ID: XXX Volume: XXX - unmatched"
 	if (p->getAction() == 1)
 		cout << "Market Inbalance - Buy Order ID:" << p->getID()<< " Volume:" << p->getNumShares() << " - unmatched"<<endl;
@@ -311,7 +311,6 @@ void OrderBook::matchLimited(Order* currentPtr)
 //process the transactions (matches) and record them in an audit (transaction) file as follows: Buyer ID, Seller ID, Price, Shares, Time Stamp 
 
 void OrderBook::display(Order* current, Order* book) {
-	timeDelay(seconds);
 	double t;
 	t = rand(); // for time stamp, i guess??
 
