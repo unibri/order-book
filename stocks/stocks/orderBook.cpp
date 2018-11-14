@@ -160,7 +160,7 @@ void OrderBook::matchMarket(Order* currentPtr)
 		match = true;
 		while (currentPtr->getNumShares() > Front->p->getNumShares())
 		{
-			display(currentPtr, Front->p);  //record the transaction;
+			display(currentPtr, Front->p, Front->p->getNumShares());  //record the transaction;
 			currentPtr->setNumShares(currentPtr->getNumShares() - Front->p->getNumShares());
 			deleteOrder(currentPtr->getAction());
 
@@ -187,6 +187,7 @@ void OrderBook::matchMarket(Order* currentPtr)
 		};//match going on
 		if (match)
 		{
+			display(currentPtr, Front->p);
 			if (currentPtr->getNumShares() == Front->p->getNumShares()) {
 				deleteOrder(currentPtr->getAction());
 			} //perfect match, just delete the book order
@@ -318,10 +319,10 @@ void OrderBook::display(Order* current, Order* book) {
 
 	if (current->getAction()==1){
 		//1 means bid order, so display buyerID first
-		cout << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << curTime <<endl;
+		cout << current->getID() << "  " << book->getID() << "  $" << book->getPrice() << "  " << current->getNumShares() << "  " << "time stamp"<<endl;
 	}
 	else{
-		cout << book->getID() << "  " << current->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << curTime <<endl;
+		cout << book->getID() << "  " << current->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << "time stamp"<<endl;
 	}
 }
 
@@ -331,10 +332,10 @@ void OrderBook::display(Order* current, Order* book, int share) {
 
 	if (current->getAction() == 1) {
 		//1 means bid order, so display buyerID first
-		cout << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << share << "  " << curTime << endl;
+		cout << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << share << "  " << "time stamp" << endl;
 	}
 	else {
-		cout << book->getID() << "  " << current->getID() << "  " << book->getPrice() << "  " << share << "  " << curTime << endl;
+		cout << book->getID() << "  " << current->getID() << "  " << book->getPrice() << "  " << share << "  " << "time stamp" << endl;
 	}
 };
 
