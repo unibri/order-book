@@ -188,32 +188,27 @@ void OrderBook::grabdata() {
 
 void OrderBook::matchMarket(Order* currentPtr)
 {	
-	queueNode *Front, *Rear;
-	bool match;
+	queueNode *Front;
+	bool match = false;
 
 	// decide which book to check
-	if (currentPtr->getAction() == 1) {
+	if (currentPtr->getAction() == 1) 
 		Front = askFront;
-		Rear = askRear;
-	}
-	else {
+	else 
 		Front = bidFront;
-		Rear = bidRear;
-	}
 	// step 1: check if the book is empty
-	if (Front == nullptr) { inbalance(currentPtr); } // there is not match, display messeage "Market Inbalance - XXX order ID: XXX Volume: XXX - unmatched"
+	if (Front == nullptr) 
+		inbalance(currentPtr);  // there is not match, display messeage "Market Inbalance - XXX order ID: XXX Volume: XXX - unmatched"
 	else {
 		// step 2: making match	
 		match = true;
-		
 		while (currentPtr->getNumShares() > Front->p->getNumShares())
 		{
 			display(currentPtr, Front->p);  //record the transaction;
 			currentPtr->setNumShares(currentPtr->getNumShares() - Front->p->getNumShares());
-
 			deleteOrder(currentPtr->getAction());
-
-			//for debug
+			/*
+			//for debug/
 			if (currentPtr->getAction() == 1) {
 				Front = askFront;
 				Rear = askRear;
@@ -221,13 +216,12 @@ void OrderBook::matchMarket(Order* currentPtr)
 			else {
 				Front = bidFront;
 				Rear = bidRear;
-			}
+			}*/
 		
 			if (Front == nullptr) {
-				if (!(currentPtr->getNumShares()==0))
-				{//nothing in the book but there're remaining shares		
+		//nothing in the book but there're remaining shares		
 					inbalance(currentPtr);
-				}
+				
 				match = false;
 				break;
 			}
@@ -235,7 +229,6 @@ void OrderBook::matchMarket(Order* currentPtr)
 		};//match going on
 		if (match)
 		{
-			display(currentPtr, Front->p);
 			if (currentPtr->getNumShares() == Front->p->getNumShares()) {
 				deleteOrder(currentPtr->getAction());
 			} //perfect match, just delete the book order
@@ -246,7 +239,7 @@ void OrderBook::matchMarket(Order* currentPtr)
 			} //imperfect match, need to update the share info of book order
 		}
 	}
-	}
+}
 
 void OrderBook::inbalance(Order* p)
 {
