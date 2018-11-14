@@ -34,11 +34,10 @@ class OrderBook : public Queue {
 public:
 	void grabdata(); 
 	void display(Order*, Order*); // display match info
+	void display(Order*, Order*, int); //overload, used for current>book condition
 	void inbalance(Order*);
 	void matchMarket(Order*); 
 	void matchLimited(Order*);
-	void displayAskbook();
-	void displayBidbook();
 	void timeDelay(double t);
 };
 

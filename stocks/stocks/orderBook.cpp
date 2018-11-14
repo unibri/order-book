@@ -273,7 +273,7 @@ void OrderBook::matchLimited(Order* currentPtr)
 			while (currentPtr->getNumShares() > Front->p->getNumShares() && match)
 			{
 				currentPtr->setNumShares(currentPtr->getNumShares() - Front->p->getNumShares());
-				display(currentPtr, Front->p);  //record the transaction;
+				display(currentPtr, Front->p, Front->p->getNumShares());  //record the transaction;
 				
 				deleteOrder(currentPtr->getAction());
 				
@@ -322,6 +322,19 @@ void OrderBook::display(Order* current, Order* book) {
 		cout << book->getID() << "  " << current->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << "time stamp"<<endl;
 	}
 }
+
+void OrderBook::display(Order* current, Order* book, int share) {
+	double t;
+	t = rand(); // for time stamp, i guess??
+
+	if (current->getAction() == 1) {
+		//1 means bid order, so display buyerID first
+		cout << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << share << "  " << "time stamp" << endl;
+	}
+	else {
+		cout << book->getID() << "  " << current->getID() << "  " << book->getPrice() << "  " << share << "  " << "time stamp" << endl;
+	}
+};
 
 
 void OrderBook::timeDelay(double t) {
