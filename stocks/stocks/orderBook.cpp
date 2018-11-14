@@ -127,15 +127,15 @@ void OrderBook::grabdata() {
 		}
 	}
 	queueNode *ptr = askFront;
-	cout << "THIS IS WHATS LEFT ON THE ASk BOOK: " << endl;
+	cout << "THIS IS WHATS LEFT ON THE ASK BOOK: " << endl;
 	while (ptr != nullptr) {
-		cout << "$" << ptr->p->getPrice() << " " << ptr->p->getID() << " " << ptr->p->getTime() << endl;
+		cout << ptr->p->getType()<<"  "<<ptr->p->getAction() << "$" << ptr->p->getPrice() << " " << ptr->p->getID() << " " << ptr->p->getTime() << endl;
 			ptr = ptr->next;
 	}
 	cout << "THIS IS WHATS LEFT ON THE BID BOOK: " << endl;
 	ptr = bidFront;
 	while (ptr != nullptr) {
-		cout << "$"<< ptr->p->getPrice()<<" "<< ptr->p->getID() << " " << ptr->p->getTime() << endl;
+		cout << ptr->p->getType() << "  " << ptr->p->getAction() << "$"<< ptr->p->getPrice()<<" "<< ptr->p->getID() << " " << ptr->p->getTime() << endl;
 		ptr = ptr->next;
 	}
 }
