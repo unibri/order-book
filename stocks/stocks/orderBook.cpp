@@ -204,9 +204,7 @@ void OrderBook::matchMarket(Order* currentPtr)
 		Rear = bidRear;
 	}
 	// step 1: check if the book is empty
-	int i=0;
-
-	if (Front == nullptr) { inbalance(currentPtr); i = 1; } // there is not match, display messeage "Market Inbalance - XXX order ID: XXX Volume: XXX - unmatched"
+	if (Front == nullptr) { inbalance(currentPtr); } // there is not match, display messeage "Market Inbalance - XXX order ID: XXX Volume: XXX - unmatched"
 	else {
 		// step 2: making match	
 		match = true;
@@ -262,7 +260,111 @@ void OrderBook::inbalance(Order* p)
 		cout << "Market Inbalance - Ask Order ID:" << p->getID() << " Volume:" << p->getNumShares() << " - unmatched"<<endl;
 };
 
+//just wanna try the old way
+void OrderBook::matchLimited(Order* currentPtr)
+{
+	queueNode *Front, *Rear;
+	bool match,base;
 
+	// decide which book to check
+	if (currentPtr->getAction() == 1) {
+		Front = askFront;
+		Rear = nullptr;
+	}
+	else {
+		Front = bidFront;
+		Rear = nullptr;
+	}
+	// step 1: check if the book is empty
+	match = false;
+	if (Front == nullptr) {
+		
+		if (currentPtr->getAction() == 1) insertBidBook(currentPtr);
+		else insertAskBook(currentPtr); //if no match, just add current order to orderBook
+	} 
+	else {
+		// step 2: check if price match. If yes, set the bottom price 	
+		
+		base = false;
+		if (currentPtr->getAction() == 1) //buy order
+		{
+			if (currentPtr->getPrice() < Front->p->getPrice()) {  //even the first order in the queue is not satisfied, no price match
+				insertBidBook(currentPtr);
+			}
+			else {
+				match = true;
+				queueNode* ptr = askFront;
+				queueNode* prev = nullptr;
+				while (ptr != nullptr &&  currentPtr->getPrice()>= (ptr->p->getPrice())) {
+					//moves through the queue until we get to the limit price (wont pay more)
+					prev = ptr;
+					ptr = ptr->next;
+				}
+				if (ptr != nullptr) { Rear = ptr; base = true; } // will be the bottom price
+			}
+		}
+		else {//sell order
+			if (currentPtr->getPrice() > Front->p->getPrice()) {  //even the first order in the queue is not satisfied, no price match
+				insertAskBook(currentPtr);
+			}
+			else {
+				match = true;
+				queueNode* ptr = bidFront; //used to go through queue
+				queueNode* prev = nullptr;
+				//descending queue, so we go through until we find price thats less than or equal
+				while (ptr != nullptr && currentPtr->getPrice() <= (ptr->p->getPrice())) {
+					prev = ptr;
+					ptr = ptr->next;
+				}
+				if (ptr != nullptr) { Rear = ptr; base = true; }
+			}
+		}
+
+		//step 3: match the shares
+
+		if (match){
+			
+			while (currentPtr->getNumShares() > Front->p->getNumShares() && match)
+			{
+				currentPtr->setNumShares(currentPtr->getNumShares() - Front->p->getNumShares());
+				display(currentPtr, Front->p);  //record the transaction;
+				
+				deleteOrder(currentPtr->getAction());
+				
+				//for debug, it seems the Front won't auto move as AskFront moves
+				if (currentPtr->getAction() == 1) { Front = askFront; }
+				else { Front = bidFront; }
+
+				if ((base && Front == Rear)||(!base && Front == nullptr)) {							
+							if (currentPtr->getAction() == 1) { insertBidBook(currentPtr); }
+							else { insertAskBook(currentPtr); }					
+						match = false;
+						break;
+					}
+			}
+		};
+		
+	
+		//match going on
+		if (match)
+		{
+			display(currentPtr, Front->p);
+
+			if (currentPtr->getNumShares() == Front->p->getNumShares()) {
+				deleteOrder(currentPtr->getAction());
+			} //perfect match, just delete the book order
+			else {
+				int t;
+				t = Front->p->getNumShares() - currentPtr->getNumShares();
+				Front->p->setNumShares(t);
+			} //imperfect match, need to update the share info of book order
+		}
+	}
+}
+
+
+
+/*
 void OrderBook::matchLimited(Order* order) {
 	cout << "hey using match lmaooo" << endl;
 	if (order->getAction() == 1) {//it is a bid/buy
@@ -434,6 +536,7 @@ void OrderBook::matchLimited(Order* order) {
 	}
 }
 
+*/
 
 //process the transactions (matches) and record them in an audit (transaction) file as follows: Buyer ID, Seller ID, Price, Shares, Time Stamp 
 
