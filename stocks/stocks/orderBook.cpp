@@ -161,7 +161,7 @@ void OrderBook::grabdata() {
 		while (data) {
 			orderPtr = new Order; //new Order 
 			data >> orderPtr;
-			if (orderPtr->getAction() == 0) { //if market order action =(0)
+			if (orderPtr->getType() == 0) { //if market order action =(0)
 				matchMarket(orderPtr);
 			}
 			else { //if it is a limited order (1)
@@ -188,7 +188,7 @@ void OrderBook::grabdata() {
 
 void OrderBook::matchMarket(Order* currentPtr)
 {	
-	queueNode *Front;
+	queueNode *Front, *Rear;
 	bool match = false;
 
 	// decide which book to check
@@ -208,6 +208,7 @@ void OrderBook::matchMarket(Order* currentPtr)
 			currentPtr->setNumShares(currentPtr->getNumShares() - Front->p->getNumShares());
 			deleteOrder(currentPtr->getAction());
 
+			
 			//for debug
 			if (currentPtr->getAction() == 1) {
 				Front = askFront;
@@ -216,7 +217,8 @@ void OrderBook::matchMarket(Order* currentPtr)
 			else {
 				Front = bidFront;
 				Rear = bidRear;
-			}*/
+			}
+			
 		
 			if (Front == nullptr) {
 		//nothing in the book but there're remaining shares		
@@ -251,7 +253,7 @@ void OrderBook::inbalance(Order* p)
 };
 
 //just wanna try the old way
-/*
+
 void OrderBook::matchLimited(Order* currentPtr)
 {
 	queueNode *Front, *Rear;
@@ -352,10 +354,10 @@ void OrderBook::matchLimited(Order* currentPtr)
 		}
 	}
 }
-*/
 
 
 
+/*
 void OrderBook::matchLimited(Order* order) {
 	cout << "hey using match lmaooo" << endl;
 	queueNode* ptr;
@@ -451,7 +453,7 @@ void OrderBook::matchLimited(Order* order) {
 	}
 }
 
-
+*/
 
 //process the transactions (matches) and record them in an audit (transaction) file as follows: Buyer ID, Seller ID, Price, Shares, Time Stamp 
 
