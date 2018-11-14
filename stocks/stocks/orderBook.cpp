@@ -329,17 +329,20 @@ void OrderBook::display(Order* current, Order* book) {
 	time_t curTime;
 	curTime = time(NULL);
 	double priceT = book->getPrice();
-	cout << "HEY TESTING: " << priceT << endl;
 	double difference = (book->getPrice() - closingPrice);
 	if (current->getAction()==1){
 		//1 means bid order, so display buyerID first
+		cout << fixed;
+		cout.precision(2);
 		cout << stock << " " << priceT;
-		cout << " " << setprecision(2)<< difference << " " << (difference / closingPrice)*100 << " " << endl;
+		cout << " " << difference << " (" << (difference / closingPrice)*100 << ")% " << endl;
 		trans << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << curTime << endl;
 	}
 	else{
+		cout << fixed;
+		cout.precision(2);
 		cout << stock << " " << priceT;
-		cout << " " << setprecision(2) << difference << " " << (difference / closingPrice)*100 << " " << endl;		trans << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << curTime << endl;
+		cout << " " << difference << " (" << (difference / closingPrice)*100 << ")% " << endl;		trans << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << curTime << endl;
 		trans << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << curTime << endl;
 	}
 }
@@ -351,13 +354,17 @@ void OrderBook::display(Order* current, Order* book, int share) {
 	double difference = (book->getPrice() - closingPrice);
 	if (current->getAction() == 1) {
 		//1 means bid order, so display buyerID first
+		cout << fixed;
+		cout.precision(2);
 		cout << stock << " " << priceT;
-		cout << " " << setprecision(2) << difference << " " << (difference / closingPrice)*100 << " " << endl;		trans << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << curTime << endl;
+		cout << " " << difference << " (" << (difference / closingPrice)*100 << ")% " << endl;		trans << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << curTime << endl;
 		trans << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << curTime << endl;
 	}
 	else {
+		cout << fixed;
+		cout.precision(2);
 		cout << stock << " " << priceT;
-		cout << " " << setprecision(2) << difference << " " << (difference / closingPrice)*100 << " " << endl;		trans << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << curTime << endl;
+		cout << " " << difference << " (" << (difference / closingPrice)*100 << ")% " << endl;		trans << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << curTime << endl;
 		trans << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << curTime << endl;
 
 	}
