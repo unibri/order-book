@@ -29,6 +29,8 @@ void Queue::deleteOrder(int action) {
 		delete temp;
 	}
 }
+
+
 //deletes specified node from queue
 void Queue::deleteOrder(queueNode* order) {
 	cout << "DELETING" << endl;
@@ -76,6 +78,7 @@ void Queue::deleteOrder(queueNode* order) {
 		}
 		}
 }
+
 
 //inserts into bid book in descending order
 void Queue::insertBidBook(Order* order) {
@@ -159,7 +162,8 @@ void OrderBook::grabdata() {
 		while (data) {
 			orderPtr = new Order; //new Order 
 			data >> orderPtr;
-			if (orderPtr->getAction() == 0) { //if market order action =(0)
+			if (orderPtr->getType() == 0) { //if market order action =(0)
+				matchMarket(orderPtr);
 			}
 			else { //if it is a limited order (1)
 				//search for match search for match
@@ -184,7 +188,7 @@ void OrderBook::grabdata() {
 }
 //action=1, this is a buy order and check the AskBook
 //action=-1, this is a sell order and check the BidBook
-/*
+
 void OrderBook::matchMarket(Order* currentPtr)
 {	
 	queueNode *Front, *Rear;
@@ -200,10 +204,13 @@ void OrderBook::matchMarket(Order* currentPtr)
 		Rear = bidRear;
 	}
 	// step 1: check if the book is empty
-	if (Front == nullptr) { inbalance(currentPtr); } // there is not match, display messeage "Market Inbalance - XXX order ID: XXX Volume: XXX - unmatched"
+	int i=0;
+
+	if (Front == nullptr) { inbalance(currentPtr); i = 1; } // there is not match, display messeage "Market Inbalance - XXX order ID: XXX Volume: XXX - unmatched"
 	else {
 		// step 2: making match	
 		match = true;
+		
 		while (currentPtr->getNumShares() > Front->p->getNumShares())
 		{
 			display(currentPtr, Front->p);  //record the transaction;
@@ -211,8 +218,18 @@ void OrderBook::matchMarket(Order* currentPtr)
 
 			deleteOrder(currentPtr->getAction());
 
-			if (Front = nullptr) {
-				if (currentPtr->getNumShares() != 0)
+			//for debug
+			if (currentPtr->getAction() == 1) {
+				Front = askFront;
+				Rear = askRear;
+			}
+			else {
+				Front = bidFront;
+				Rear = bidRear;
+			}
+		
+			if (Front == nullptr) {
+				if (!(currentPtr->getNumShares()==0))
 				{//nothing in the book but there're remaining shares		
 					inbalance(currentPtr);
 				}
@@ -240,11 +257,12 @@ void OrderBook::inbalance(Order* p)
 {
 	//display messeage "Market Inbalance - XXX order ID: XXX Volume: XXX - unmatched"
 	if (p->getAction() == 1)
-		cout << "Market Inbalance - Buy Order ID:" << p->getID()<< " Volume:" << p->getNumShares() << " - unmatched";
+		cout << "Market Inbalance - Buy Order ID:" << p->getID()<< " Volume:" << p->getNumShares() << " - unmatched"<<endl;
 	else 
-		cout << "Market Inbalance - Ask Order ID:" << p->getID() << " Volume:" << p->getNumShares() << " - unmatched";
+		cout << "Market Inbalance - Ask Order ID:" << p->getID() << " Volume:" << p->getNumShares() << " - unmatched"<<endl;
 };
-*/
+
+
 void OrderBook::matchLimited(Order* order) {
 	cout << "hey using match lmaooo" << endl;
 	if (order->getAction() == 1) {//it is a bid/buy
@@ -264,19 +282,22 @@ void OrderBook::matchLimited(Order* order) {
 				if (prev->p->getNumShares() == order->getNumShares()) { //if it is
 					//display(); //we display a match, **NEED TO DEFINE
 					//deleteOrder(prev); //deletes the node we matched with **NEED OVERLOAD FUNCTION
-					Queue::display();
+					//Queue::display();
+					display(order,prev->p);
 					Queue::deleteOrder(prev);
 				}
 				else if (prev->p->getNumShares() < order->getNumShares()) { //it is not an exact match
-					Queue::display();
+					//Queue::display();		
 					order->setNumShares(order->getNumShares() - prev->p->getNumShares()); //update order
+					display(order, prev->p);
 					Queue::deleteOrder(prev);
 					matchLimited(order); //we send order back to check for another match
 				}
 				else if (prev->p->getNumShares() > order->getNumShares()) { //it is not exact BUT we matched, so we update what the ptr is pointing to
 					//display(); //display what we matched
-					Queue::display();
-					prev->p->setNumShares(prev->p->getNumShares() - order->getNumShares()); //update order
+					
+					prev->p->setNumShares(prev->p->getNumShares() - order->getNumShares());
+					display(order, prev->p); //update order
 					//no need send anything back because we updated the order ptr was pointing to
 				}
 			}
@@ -286,19 +307,22 @@ void OrderBook::matchLimited(Order* order) {
 				if (ptr->p->getNumShares() == order->getNumShares()) { //if it is
 					//display(); //we display a match, **NEED TO DEFINE
 					//deleteOrder(prev); //deletes the node we matched with **NEED OVERLOAD FUNCTION
-					Queue::display();
+					//Queue::display();
+					display(order, prev->p);
 					Queue::deleteOrder(ptr);
 				}
 				else if (ptr->p->getNumShares() < order->getNumShares()) { //it is not an exact match
 					//display(); //display what we matched
-					Queue::display();
+					//Queue::display();
+					display(order, prev->p);
 					order->setNumShares(order->getNumShares() - prev->p->getNumShares()); //update order
 					Queue::deleteOrder(ptr);
 					matchLimited(order); //we send order back to check for another match
 				}
 				else if (ptr->p->getNumShares() > order->getNumShares()) { //it is not exact BUT we matched, so we update what the ptr is pointing to
 					//display(); //display what we matched
-					Queue::display();
+					//Queue::display();
+					display(order, prev->p);
 					ptr->p->setNumShares(ptr->p->getNumShares() - order->getNumShares()); //update order
 					//no need send anything back because we updated the order ptr was pointing to
 				}
@@ -410,29 +434,38 @@ void OrderBook::matchLimited(Order* order) {
 	}
 }
 
+
 //process the transactions (matches) and record them in an audit (transaction) file as follows: Buyer ID, Seller ID, Price, Shares, Time Stamp 
-/*
+
 void OrderBook::display(Order* current, Order* book) {
 	double t;
 	t = rand(); // for time stamp, i guess??
 
 	if (current->getAction()==1){
 		//1 means bid order, so display buyerID first
-		cout << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << "time stamp";
+		cout << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << "time stamp"<<endl;
 	}
 	else{
-		cout << book->getID() << "  " << current->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << "time stamp";
+		cout << book->getID() << "  " << current->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << "time stamp"<<endl;
 	}
 }
 
+/*
 void OrderBook::timeDelay(double t) {
-	time_t initial, final;  time_t ltime;  initial = time(&ltime);  final = initial + t;
+	time_t initial, final;  
+	time_t ltime;  
+	
+	initial = time(&ltime);  
+	final = initial + t;
 
 	while (time(&ltime) < final) {}
 
 	return;
 }
+
 */
+
 void Queue::display() {
 	cout << "YEEEEER WE MATCHED" << endl;
 }
+

@@ -39,7 +39,7 @@ public:
 	void display(Order*, Order*); // display match info
 	void inbalance(Order*);
 	void matchMarket(Order*); 
-	void matchLimited(Order*); 
+	void matchLimited(Order*);
 	void displayAskbook();
 	void displayBidbook();
 	void timeDelay(double t);
