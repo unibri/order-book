@@ -216,6 +216,7 @@ void OrderBook::matchMarket(Order* currentPtr)
 			deleteOrder(currentPtr->getAction());
 
 			//for debug
+			
 			if (currentPtr->getAction() == 1) {
 				Front = askFront;
 				Rear = askRear;
