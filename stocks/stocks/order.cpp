@@ -8,7 +8,7 @@ Order::Order() {
 	ID = "";
 }
 
-istream& operator >> (istream& is, Order* O) {
+istream& operator >> (istream& is, Order* O) { 
 	is >> O->type >> O->action >> O->price >>
 		O->numShares >> O->ID;
 	return is;

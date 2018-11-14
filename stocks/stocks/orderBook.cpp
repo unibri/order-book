@@ -95,7 +95,7 @@ void Queue::insertAskBook(Order* order) {
 
 void OrderBook::grabdata() {
 	double seconds;
-	cout << "Enter the smulation delay in fraction of a second: ";
+	cout << "Enter the simulation delay in fraction of a second: ";
 	cin >> seconds;
 	ifstream data;
 	string fileName;
@@ -115,6 +115,8 @@ void OrderBook::grabdata() {
 			orderPtr = new Order; //new Order 
 			data >> orderPtr;
 			timeDelay(seconds);
+			time_t timeD = time(NULL);
+			orderPtr->setTime(timeD);
 			if (orderPtr->getType() == 0) { //if market order action =(0)
 				matchMarket(orderPtr);
 			}
@@ -127,13 +129,13 @@ void OrderBook::grabdata() {
 	queueNode *ptr = askFront;
 	cout << "THIS IS WHATS LEFT ON THE ASk BOOK: " << endl;
 	while (ptr != nullptr) {
-		cout << "$" << ptr->p->getPrice() << " " << ptr->p->getID() << endl;
+		cout << "$" << ptr->p->getPrice() << " " << ptr->p->getID() << " " << ptr->p->getTime() << endl;
 			ptr = ptr->next;
 	}
 	cout << "THIS IS WHATS LEFT ON THE BID BOOK: " << endl;
 	ptr = bidFront;
 	while (ptr != nullptr) {
-		cout << "$"<< ptr->p->getPrice()<<" "<< ptr->p->getID() << endl;
+		cout << "$"<< ptr->p->getPrice()<<" "<< ptr->p->getID() << " " << ptr->p->getTime() << endl;
 		ptr = ptr->next;
 	}
 }
@@ -311,28 +313,28 @@ void OrderBook::matchLimited(Order* currentPtr)
 //process the transactions (matches) and record them in an audit (transaction) file as follows: Buyer ID, Seller ID, Price, Shares, Time Stamp 
 
 void OrderBook::display(Order* current, Order* book) {
-	double t;
-	t = rand(); // for time stamp, i guess??
+	time_t curTime;
+	curTime = time(NULL);
 
 	if (current->getAction()==1){
 		//1 means bid order, so display buyerID first
-		cout << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << "time stamp"<<endl;
+		cout << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << curTime <<endl;
 	}
 	else{
-		cout << book->getID() << "  " << current->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << "time stamp"<<endl;
+		cout << book->getID() << "  " << current->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << curTime <<endl;
 	}
 }
 
 void OrderBook::display(Order* current, Order* book, int share) {
-	double t;
-	t = rand(); // for time stamp, i guess??
+	time_t curTime;
+	curTime = time(NULL);
 
 	if (current->getAction() == 1) {
 		//1 means bid order, so display buyerID first
-		cout << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << share << "  " << "time stamp" << endl;
+		cout << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << share << "  " << curTime << endl;
 	}
 	else {
-		cout << book->getID() << "  " << current->getID() << "  " << book->getPrice() << "  " << share << "  " << "time stamp" << endl;
+		cout << book->getID() << "  " << current->getID() << "  " << book->getPrice() << "  " << share << "  " << curTime << endl;
 	}
 };
 

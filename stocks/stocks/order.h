@@ -22,6 +22,7 @@ private:
 	double price;
 	int numShares; //stores number of shares
 	string ID;
+	time_t time; //stores time stamp
 
 public:
 	Order();
@@ -42,6 +43,9 @@ public:
 	void setID(string s) {
 		ID = s;
 	}
+	void setTime(time_t t) {
+		time = t;
+	}
 	//ACCESSOR FUNCTIONS
 	int getType() {
 		return type;
@@ -57,6 +61,9 @@ public:
 	}
 	string getID() {
 		return ID;
+	}
+	time_t getTime() {
+		return time;
 	}
 	//OVERLOADED OPERATORS
 	friend ostream& operator << (ostream& os, const Order&);
