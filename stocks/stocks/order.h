@@ -60,6 +60,7 @@ public:
 	//OVERLOADED OPERATORS
 	friend ostream& operator << (ostream& os, const Order&);
 	friend istream& operator >> (istream&, Order*);
+	bool operator==(const Order&);
 };
 
 

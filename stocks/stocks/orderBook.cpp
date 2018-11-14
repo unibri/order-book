@@ -30,9 +30,53 @@ void Queue::deleteOrder(int action) {
 	}
 }
 //deletes specified node from queue
-void Queue::deleteOrder(queueNode* orderPtr) {
-	cout << "hey using delete lmaooo" << endl;
+void Queue::deleteOrder(queueNode* order) {
+	cout << "DELETING" << endl;
+	queueNode* ptr; //used to go through
+	queueNode* prev = nullptr;
+
+	if (order->p->getAction() == 1) {
+		if (!askFront)
+			return;
+		if (askFront->p->getID() == order->p->getID() && askFront->p->getPrice() == order->p->getPrice()) {
+			ptr = askFront;
+			askFront = askFront->next;
+			delete ptr;
+		}
+		else {
+			ptr = askFront;
+			while (ptr != nullptr && (ptr->p->getID() != order->p->getID() && ptr->p->getPrice() != order->p->getPrice())) {
+				prev = ptr;
+				ptr = ptr->next;
+			}
+			if (ptr) {
+				prev->next = ptr->next;
+				delete ptr;
+			}
+		}
+	}
+	else {
+		if (!bidFront)
+			return;
+		if (bidFront->p->getID() == order->p->getID() && bidFront->p->getPrice() == order->p->getPrice()) {
+			ptr = bidFront;
+			bidFront = bidFront->next;
+			delete ptr;
+		}
+		else {
+			ptr = bidFront;
+			while (ptr != nullptr && (ptr->p->getID() != order->p->getID() && ptr->p->getPrice() != order->p->getPrice())){
+				prev = ptr;
+				ptr = ptr->next;
+			}
+			if (ptr) {
+				prev->next = ptr->next;
+				delete ptr;
+			}
+		}
+		}
 }
+
 //inserts into bid book in descending order
 void Queue::insertBidBook(Order* order) {
 	queueNode* newNode;
@@ -205,7 +249,7 @@ void OrderBook::matchLimited(Order* order) {
 	cout << "hey using match lmaooo" << endl;
 	if (order->getAction() == 1) {//it is a bid/buy
 		if (askFront == nullptr) //then there is nothing to buy from, so we queue it!
-			insertBidBook(order);  //**NEED TO DEFINE
+			insertBidBook(order);  
 		else {
 			//we look through the ask queue
 			queueNode* ptr = askFront; //used to go through queue
@@ -221,13 +265,12 @@ void OrderBook::matchLimited(Order* order) {
 					//display(); //we display a match, **NEED TO DEFINE
 					//deleteOrder(prev); //deletes the node we matched with **NEED OVERLOAD FUNCTION
 					Queue::display();
-					//deleteOrder(prev)
+					Queue::deleteOrder(prev);
 				}
 				else if (prev->p->getNumShares() < order->getNumShares()) { //it is not an exact match
-					//display(); //display what we matched
 					Queue::display();
 					order->setNumShares(order->getNumShares() - prev->p->getNumShares()); //update order
-					//deleteOrder(prev)
+					Queue::deleteOrder(prev);
 					matchLimited(order); //we send order back to check for another match
 				}
 				else if (prev->p->getNumShares() > order->getNumShares()) { //it is not exact BUT we matched, so we update what the ptr is pointing to
@@ -244,12 +287,13 @@ void OrderBook::matchLimited(Order* order) {
 					//display(); //we display a match, **NEED TO DEFINE
 					//deleteOrder(prev); //deletes the node we matched with **NEED OVERLOAD FUNCTION
 					Queue::display();
+					Queue::deleteOrder(ptr);
 				}
 				else if (ptr->p->getNumShares() < order->getNumShares()) { //it is not an exact match
 					//display(); //display what we matched
 					Queue::display();
 					order->setNumShares(order->getNumShares() - prev->p->getNumShares()); //update order
-					//deleteOrder(prev)
+					Queue::deleteOrder(ptr);
 					matchLimited(order); //we send order back to check for another match
 				}
 				else if (ptr->p->getNumShares() > order->getNumShares()) { //it is not exact BUT we matched, so we update what the ptr is pointing to
@@ -300,14 +344,14 @@ void OrderBook::matchLimited(Order* order) {
 				//once we found the match, we check if the ask is exact number of shares
 				if (prev->p->getNumShares() == order->getNumShares()) { //if it is
 					//display(); //we display a match, **NEED TO DEFINE
-					//deleteOrder(prev); //deletes the node we matched with **NEED OVERLOAD FUNCTION
+					Queue::deleteOrder(prev); //deletes the node we matched with **NEED OVERLOAD FUNCTION
 					Queue::display();
 				}
 				else if (prev->p->getNumShares() < order->getNumShares()) { //it is not an exact match
 					//display(); //display what we matched
 					Queue::display();
 					order->setNumShares(order->getNumShares() - prev->p->getNumShares()); //update order
-					//deleteOrder(prev)
+					Queue::deleteOrder(prev);
 					matchLimited(order); //we send order back to check for another match
 				}
 				else if (prev->p->getNumShares() > order->getNumShares()) { //it is not exact BUT we matched, so we update what the ptr is pointing to
@@ -322,14 +366,14 @@ void OrderBook::matchLimited(Order* order) {
 				//once we found the match, we check if the ask is exact number of shares
 				if (ptr->p->getNumShares() == order->getNumShares()) { //if it is
 					//display(); //we display a match, **NEED TO DEFINE
-					//deleteOrder(prev); //deletes the node we matched with **NEED OVERLOAD FUNCTION
+					Queue::deleteOrder(ptr); //deletes the node we matched with **NEED OVERLOAD FUNCTION
 					Queue::display();
 				}
 				else if (ptr->p->getNumShares() < order->getNumShares()) { //it is not an exact match
 					//display(); //display what we matched
 					Queue::display();
 					order->setNumShares(order->getNumShares() - prev->p->getNumShares()); //update order
-					//deleteOrder(prev)
+					Queue::deleteOrder(ptr);
 					matchLimited(order); //we send order back to check for another match
 				}
 				else if (ptr->p->getNumShares() > order->getNumShares()) { //it is not exact BUT we matched, so we update what the ptr is pointing to
@@ -342,14 +386,14 @@ void OrderBook::matchLimited(Order* order) {
 			else if (ptr->p->getPrice() > order->getPrice() ){
 				if (prev->p->getNumShares() == order->getNumShares()) { //if it is
 					//display(); //we display a match, **NEED TO DEFINE
-					//deleteOrder(prev); //deletes the node we matched with **NEED OVERLOAD FUNCTION
+					Queue::deleteOrder(prev); //deletes the node we matched with **NEED OVERLOAD FUNCTION
 					Queue::display();
 				}
 				else if (prev->p->getNumShares() < order->getNumShares()) { //it is not an exact match
 					//display(); //display what we matched
 					Queue::display();
 					order->setNumShares(order->getNumShares() - prev->p->getNumShares()); //update order
-					//deleteOrder(prev)
+					Queue::deleteOrder(prev);
 					matchLimited(order); //we send order back to check for another match
 				}
 				else if (prev->p->getNumShares() > order->getNumShares()) { //it is not exact BUT we matched, so we update what the ptr is pointing to

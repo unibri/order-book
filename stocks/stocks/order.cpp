@@ -13,3 +13,4 @@ istream& operator >> (istream& is, Order* O) {
 		O->numShares >> O->ID;
 	return is;
 }
+
