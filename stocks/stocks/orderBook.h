@@ -18,14 +18,11 @@ protected:
 	queueNode* askRear;
 	int aSize, bSize;
 	
-	
-
 public:
 	Queue();
 	~Queue();
 	void insertAskBook(Order*);
 	void insertBidBook(Order*);
-	void deleteOrder(queueNode*); //overloaded deleteOrder functions. looks through q
 	void deleteOrder(int); // int indicates book type
 	void display(); //used for debugging
     

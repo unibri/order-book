@@ -1,5 +1,6 @@
 #include "orderBook.h"
 
+double seconds; //global var
 /*DEFINITIONS FOR Queue FUNCTIONS*/
 
 Queue::Queue(){
@@ -31,55 +32,6 @@ void Queue::deleteOrder(int action) {
 }
 
 
-//deletes specified node from queue
-void Queue::deleteOrder(queueNode* order) {
-	cout << "DELETING" << endl;
-	queueNode* ptr; //used to go through
-	queueNode* prev = nullptr;
-
-	if (order->p->getAction() == 1) {
-		if (!askFront)
-			return;
-		if (askFront->p->getID() == order->p->getID() && askFront->p->getPrice() == order->p->getPrice()) {
-			ptr = askFront;
-			askFront = askFront->next;
-			delete ptr;
-		}
-		else {
-			ptr = askFront;
-			while (ptr != nullptr && (ptr->p->getID() != order->p->getID() && ptr->p->getPrice() != order->p->getPrice())) {
-				prev = ptr;
-				ptr = ptr->next;
-			}
-			if (ptr) {
-				prev->next = ptr->next;
-				delete ptr;
-			}
-		}
-	}
-	else {
-		if (!bidFront)
-			return;
-		if (bidFront->p->getID() == order->p->getID() && bidFront->p->getPrice() == order->p->getPrice()) {
-			ptr = bidFront;
-			bidFront = bidFront->next;
-			delete ptr;
-		}
-		else {
-			ptr = bidFront;
-			while (ptr != nullptr && (ptr->p->getID() != order->p->getID() && ptr->p->getPrice() != order->p->getPrice())){
-				prev = ptr;
-				ptr = ptr->next;
-			}
-			if (ptr) {
-				prev->next = ptr->next;
-				delete ptr;
-			}
-		}
-		}
-}
-
-
 //inserts into bid book in descending order
 void Queue::insertBidBook(Order* order) {
 	queueNode* newNode;
@@ -87,7 +39,6 @@ void Queue::insertBidBook(Order* order) {
 	queueNode* prevNode;
 	newNode = new queueNode;
 	newNode->p = order;
-	cout << "hey using insert lmaooo" << endl;
 
 	if (!bidFront) { //if there are no nodes
 		bidFront = newNode; //sets bidFront
@@ -144,6 +95,8 @@ void Queue::insertAskBook(Order* order) {
 /*DEFINITIONS FOR ORDERBOOK FUNCTIONS*/
 
 void OrderBook::grabdata() {
+	cout << "Enter the smulation delay in fraction of a second: ";
+	cin >> seconds;
 	ifstream data;
 	string fileName;
 	//Asks user to type file name and opens file
@@ -243,8 +196,8 @@ void OrderBook::matchMarket(Order* currentPtr)
 	}
 }
 
-void OrderBook::inbalance(Order* p)
-{
+void OrderBook::inbalance(Order* p){
+	timeDelay(seconds);
 	//display messeage "Market Inbalance - XXX order ID: XXX Volume: XXX - unmatched"
 	if (p->getAction() == 1)
 		cout << "Market Inbalance - Buy Order ID:" << p->getID()<< " Volume:" << p->getNumShares() << " - unmatched"<<endl;
@@ -355,109 +308,10 @@ void OrderBook::matchLimited(Order* currentPtr)
 	}
 }
 
-
-
-/*
-void OrderBook::matchLimited(Order* order) {
-	cout << "hey using match lmaooo" << endl;
-	queueNode* ptr;
-	queueNode*  prev = nullptr;
-	if (order->getAction() == 1) { //it is a bid
-		ptr = askFront; //we check the askbook
-		if (ptr == nullptr) { //if it's empty
-			insertBidBook(order);
-			return;
-		}
-		else { //if not empty moves through the queue until we get to the limit price (wont pay more)
-			while (ptr != nullptr && order->getPrice() > ptr->p->getPrice()) {
-				prev = ptr;
-				ptr = ptr->next;
-			}
-		}
-	}
-	else { //it is an ask
-		ptr = bidFront; //we check the bidBook
-		if (ptr == nullptr) { //if it's empty
-			insertAskBook(order);
-				return;
-		}
-		else { //descending queue, so we go through until we find price thats less than
-			while (ptr != nullptr && order->getPrice() < ptr->p->getPrice()) {
-				prev = ptr;
-				ptr = ptr->next;
-			}
-		}
-	}
-	if (ptr == nullptr) {
-		//if ptr==we are at the end, so we match prev 
-		//once we found the match, we check if the ask is exact number of shares
-		if (prev->p->getNumShares() == order->getNumShares()) { //if it is
-			display(order, prev->p);
-			Queue::deleteOrder(prev);
-		}
-		else if (prev->p->getNumShares() < order->getNumShares()) { //it is not an exact match
-			order->setNumShares(order->getNumShares() - prev->p->getNumShares()); //update order
-			display(order, prev->p);
-			Queue::deleteOrder(prev);
-			matchLimited(order); //we send order back to check for another match
-		}
-		else if (prev->p->getNumShares() > order->getNumShares()) { //it is not exact BUT we matched, so we update what the ptr is pointing to
-			display(order, prev->p);
-			prev->p->setNumShares(prev->p->getNumShares() - order->getNumShares());
-			//no need send anything back because we updated the order ptr was pointing to
-		}
-	}
-	else if (ptr->p->getPrice() == order->getPrice()) { //in case the while loop broke out and prices are equal
-		//once we found the match, we check if the ask is exact number of shares
-		if (ptr->p->getNumShares() == order->getNumShares()) { //if it is
-			display(order, ptr->p);
-			Queue::deleteOrder(ptr);
-		}
-		else if (ptr->p->getNumShares() < order->getNumShares()) { //it is not an exact match
-			display(order, ptr->p);
-			order->setNumShares(order->getNumShares() - ptr->p->getNumShares()); //update order
-			Queue::deleteOrder(ptr);
-			matchLimited(order); //we send order back to check for another match
-		}
-		else if (ptr->p->getNumShares() > order->getNumShares()) { //it is not exact BUT we matched, so we update what the ptr is pointing to
-			display(order, ptr->p);
-			ptr->p->setNumShares(ptr->p->getNumShares() - order->getNumShares()); //update order
-			//no need send anything back because we updated the order ptr was pointing to
-		}
-	}
-	else if (ptr->p->getPrice() > order->getPrice() & prev != nullptr) { 
-		//if ptr price > order price, we also match prev
-		//prev != nullptr cause if it is then there is no match
-		if (prev->p->getNumShares() == order->getNumShares()) { //if it is
-			display(order, prev->p);
-			Queue::deleteOrder(prev);
-		}
-		else if (prev->p->getNumShares() < order->getNumShares()) { //it is not an exact match
-			order->setNumShares(order->getNumShares() - prev->p->getNumShares()); //update order
-			display(order, prev->p);
-			Queue::deleteOrder(prev);
-			matchLimited(order); //we send order back to check for another match
-		}
-		else if (prev->p->getNumShares() > order->getNumShares()) { //it is not exact BUT we matched, so we update what the ptr is pointing to
-			display(order, prev->p);
-			prev->p->setNumShares(prev->p->getNumShares() - order->getNumShares());
-			//no need send anything back because we updated the order ptr was pointing to
-		}
-	}
-	else { //we did not match
-		if (order->getAction() == 1) //it is a bid
-			insertBidBook(order);
-		else
-			insertAskBook(order);
-
-	}
-}
-
-*/
-
 //process the transactions (matches) and record them in an audit (transaction) file as follows: Buyer ID, Seller ID, Price, Shares, Time Stamp 
 
 void OrderBook::display(Order* current, Order* book) {
+	timeDelay(seconds);
 	double t;
 	t = rand(); // for time stamp, i guess??
 
@@ -470,7 +324,7 @@ void OrderBook::display(Order* current, Order* book) {
 	}
 }
 
-/*
+
 void OrderBook::timeDelay(double t) {
 	time_t initial, final;  
 	time_t ltime;  
@@ -483,9 +337,6 @@ void OrderBook::timeDelay(double t) {
 	return;
 }
 
-*/
 
-void Queue::display() {
-	cout << "YEEEEER WE MATCHED" << endl;
-}
+
 
