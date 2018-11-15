@@ -5,7 +5,6 @@
 
 //dynamic queue template
 
-
 class Queue {
 protected:
 	struct queueNode{

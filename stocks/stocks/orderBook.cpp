@@ -175,8 +175,6 @@ void OrderBook::matchMarket(Order* currentPtr)
 			display(currentPtr, Front->p, Front->p->getNumShares());  //record the transaction;
 			currentPtr->setNumShares(currentPtr->getNumShares() - Front->p->getNumShares());
 			deleteOrder(currentPtr->getAction());
-
-			
 			//for debug
 			if (currentPtr->getAction() == 1) {
 				Front = askFront;
@@ -186,16 +184,12 @@ void OrderBook::matchMarket(Order* currentPtr)
 				Front = bidFront;
 				Rear = bidRear;
 			}
-			
-		
 			if (Front == nullptr) {
-		//nothing in the book but there're remaining shares		
-					inbalance(currentPtr);
-				
+				//nothing in the book but there're remaining shares		
+				inbalance(currentPtr);
 				match = false;
 				break;
 			}
-
 		};//match going on
 		if (match)
 		{
@@ -248,8 +242,7 @@ void OrderBook::matchLimited(Order* currentPtr)
 		else insertAskBook(currentPtr); //if no match, just add current order to orderBook
 	} 
 	else {
-		// step 2: check if price match. If yes, set the bottom price 	
-		
+		// step 2: check if price match. If yes, set the bottom price 		
 		base = false;
 		if (currentPtr->getAction() == 1) //buy order
 		{
@@ -265,7 +258,10 @@ void OrderBook::matchLimited(Order* currentPtr)
 					prev = ptr;
 					ptr = ptr->next;
 				}
-				if (ptr != nullptr) { Rear = ptr; base = true; } // will be the bottom price
+				if (ptr != nullptr) { 
+					Rear = ptr; 
+					base = true; 
+				} // will be the bottom price
 			}
 		}
 		else {//sell order
@@ -281,40 +277,40 @@ void OrderBook::matchLimited(Order* currentPtr)
 					prev = ptr;
 					ptr = ptr->next;
 				}
-				if (ptr != nullptr) { Rear = ptr; base = true; }
+				if (ptr != nullptr) { 
+					Rear = ptr; 
+					base = true; 
+				}
 			}
 		}
 
 		//step 3: match the shares
 
 		if (match){
-			
-			while (currentPtr->getNumShares() > Front->p->getNumShares() && match)
-			{
+			while (currentPtr->getNumShares() > Front->p->getNumShares() && match){
 				currentPtr->setNumShares(currentPtr->getNumShares() - Front->p->getNumShares());
 				display(currentPtr, Front->p, Front->p->getNumShares());  //record the transaction;
-				
 				deleteOrder(currentPtr->getAction());
 				
 				//for debug, it seems the Front won't auto move as AskFront moves
-				if (currentPtr->getAction() == 1) { Front = askFront; }
-				else { Front = bidFront; }
+				if (currentPtr->getAction() == 1) 
+					Front = askFront; 
+				else 
+					Front = bidFront; 
 
 				if ((base && Front == Rear)||(!base && Front == nullptr)) {							
-							if (currentPtr->getAction() == 1) { insertBidBook(currentPtr); }
-							else { insertAskBook(currentPtr); }					
+					if (currentPtr->getAction() == 1)  
+						insertBidBook(currentPtr); 
+					else  
+						insertAskBook(currentPtr); 					
 						match = false;
 						break;
 					}
 			}
 		};
-		
-	
 		//match going on
-		if (match)
-		{
+		if (match){
 			display(currentPtr, Front->p);
-
 			if (currentPtr->getNumShares() == Front->p->getNumShares()) {
 				deleteOrder(currentPtr->getAction());
 			} //perfect match, just delete the book order
@@ -326,9 +322,7 @@ void OrderBook::matchLimited(Order* currentPtr)
 		}
 	}
 }
-
 //process the transactions (matches) and record them in an audit (transaction) file as follows: Buyer ID, Seller ID, Price, Shares, Time Stamp 
-
 void OrderBook::display(Order* current, Order* book) {
 	time_t curTime;
 	curTime = time(NULL);
@@ -371,7 +365,6 @@ void OrderBook::display(Order* current, Order* book, int share) {
 
 	}
 };
-
 
 void OrderBook::timeDelay(double t) {
 	time_t initial, final;  
