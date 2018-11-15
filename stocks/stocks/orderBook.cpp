@@ -92,17 +92,11 @@ void Queue::insertAskBook(Order* order) {
 
 
 /*DEFINITIONS FOR ORDERBOOK FUNCTIONS*/
-string stock; //stock name
-double closingPrice; //
-ofstream bidBook, askBook, trans; //used to write into file
+
 void OrderBook::grabdata() {
 	double seconds;
 	cout << "Enter the simulation delay in fraction of a second: ";
 	cin >> seconds;
-	cout << "Enter ticker of the stock: ";
-	cin >> stock;
-	cout << "Enter the closing price from yesterday: ";
-	cin >> closingPrice;
 	ifstream data;
 	string fileName;
 	//Asks user to type file name and opens file
@@ -116,7 +110,6 @@ void OrderBook::grabdata() {
 	}
 	Order *orderPtr; //OrderPtr
 	string line;
-	trans.open("trans.txt");
 	if (data) {
 		while (data) {
 			orderPtr = new Order; //new Order 
@@ -133,23 +126,18 @@ void OrderBook::grabdata() {
 			getline(data, line); //moves on to the next line	
 		}
 	}
-	trans.close();
-	//create and write into askbook.txt
 	queueNode *ptr = askFront;
-	askBook.open("askbook.txt");
+	cout << "THIS IS WHATS LEFT ON THE ASk BOOK: " << endl;
 	while (ptr != nullptr) {
-		askBook << ptr->p->getType() <<" "<< ptr->p->getAction() <<" "<<ptr->p->getPrice()  << " " << ptr->p->getID() << endl;
+		cout << "$" << ptr->p->getPrice() << " " << ptr->p->getID() << " " << ptr->p->getTime() << endl;
 			ptr = ptr->next;
 	}
-	askBook.close();
-	//create and write into bidbook.txt
+	cout << "THIS IS WHATS LEFT ON THE BID BOOK: " << endl;
 	ptr = bidFront;
-	bidBook.open("bidbook.txt");
 	while (ptr != nullptr) {
-		bidBook << ptr->p->getType() << " " << ptr->p->getAction() << " " << ptr->p->getPrice() << " " << ptr->p->getID() << endl;
+		cout << "$"<< ptr->p->getPrice()<<" "<< ptr->p->getID() << " " << ptr->p->getTime() << endl;
 		ptr = ptr->next;
 	}
-	bidBook.close();
 }
 //action=1, this is a buy order and check the AskBook
 //action=-1, this is a sell order and check the BidBook
@@ -328,45 +316,26 @@ void OrderBook::matchLimited(Order* currentPtr)
 void OrderBook::display(Order* current, Order* book) {
 	time_t curTime;
 	curTime = time(NULL);
-	double priceT = book->getPrice();
-	double difference = (book->getPrice() - closingPrice);
+
 	if (current->getAction()==1){
 		//1 means bid order, so display buyerID first
-		cout << fixed;
-		cout.precision(2);
-		cout << stock << " " << priceT;
-		cout << " " << difference << " (" << (difference / closingPrice)*100 << ")% " << endl;
-		trans << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << curTime << endl;
+		cout << current->getID() << "  " << book->getID() << "  $" << book->getPrice() << "  " << current->getNumShares() << "  " << curTime <<endl;
 	}
 	else{
-		cout << fixed;
-		cout.precision(2);
-		cout << stock << " " << priceT;
-		cout << " " << difference << " (" << (difference / closingPrice)*100 << ")% " << endl;		trans << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << curTime << endl;
-		trans << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << curTime << endl;
+		cout << book->getID() << "  " << current->getID() << "  $" << book->getPrice() << "  " << current->getNumShares() << "  " << curTime <<endl;
 	}
 }
 
 void OrderBook::display(Order* current, Order* book, int share) {
 	time_t curTime;
 	curTime = time(NULL);
-	double priceT = book->getPrice();
-	double difference = (book->getPrice() - closingPrice);
+
 	if (current->getAction() == 1) {
 		//1 means bid order, so display buyerID first
-		cout << fixed;
-		cout.precision(2);
-		cout << stock << " " << priceT;
-		cout << " " << difference << " (" << (difference / closingPrice)*100 << ")% " << endl;		trans << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << curTime << endl;
-		trans << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << curTime << endl;
+		cout << current->getID() << "  " << book->getID() << "  $" << book->getPrice() << "  " << share << "  " << curTime << endl;
 	}
 	else {
-		cout << fixed;
-		cout.precision(2);
-		cout << stock << " " << priceT;
-		cout << " " << difference << " (" << (difference / closingPrice)*100 << ")% " << endl;		trans << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << curTime << endl;
-		trans << current->getID() << "  " << book->getID() << "  " << book->getPrice() << "  " << current->getNumShares() << "  " << curTime << endl;
-
+		cout << book->getID() << "  " << current->getID() << "  $" << book->getPrice() << "  " << share << "  " << curTime << endl;
 	}
 };
 
