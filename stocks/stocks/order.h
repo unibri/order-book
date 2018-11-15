@@ -53,7 +53,7 @@ public:
 	int getAction() {
 		return action;
 	}
-	double getPrice()const {
+	double getPrice() {
 		return price;
 	}
 	int getNumShares(){
