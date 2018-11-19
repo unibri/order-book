@@ -133,7 +133,7 @@ void OrderBook::grabdata() {
 			getline(data, line); //moves on to the next line	
 		}
 	}
-	trans.close();
+	trans.close();	
 	//create and write into askbook.txt
 	queueNode *ptr = askFront;
 	askBook.open("askbook.txt");
